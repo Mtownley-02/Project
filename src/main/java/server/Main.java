@@ -42,7 +42,6 @@ public class Main {
         }
 
     }
-
     public static void openDatabase(String dbFile) {
         try {
             SQLiteConfig config = new SQLiteConfig();
