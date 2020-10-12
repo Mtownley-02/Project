@@ -9,12 +9,15 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Path("Users/")
 @Consumes(MediaType.MULTIPART_FORM_DATA)
 @Produces(MediaType.APPLICATION_JSON)
 
 public class Users{
+
+
     @GET
     @Path("list")
     public String UsersList() {
@@ -46,14 +49,48 @@ public class Users{
             ps.setBoolean(3,Admin);
             ps.setInt(4,AdminId);
             ps.setBoolean(5,SessionToken);
+            return null;
         } catch (Exception exception){
             System.out.println("Database error: " + exception.getMessage());
             return "{\"Error\": \"Unable to create new item, please see server console for more info.\"}";
         }
+
     }
     @GET
-    @Path("hub")
-    public String UsersHub(){
+    @Path("Hub")
+    public String UsersHub(@FormDataParam("UserId") Integer UserId, @FormDataParam("SessionToken") Boolean SessionToken){
+        System.out.println("Invoked Users.UsersHub");
+        if (SessionToken==Boolean.TRUE){
+
+            return null;
+        } else{
+            System.out.println("Database error: Incorrect cookie");
+            return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";
+        }
+
+    }
+    @POST
+    @Path("AttemptLogin")
+    public String UsersAttemptLogin(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password) throws SQLException {
+        System.out.println("Invoked Users.UsersAttemptLogin");
+        PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId==UserId ");
+        Object CorrectPassword;
+        CorrectPassword=ps;
+        if (Password==CorrectPassword){
+            Boolean Cookie;
+            Cookie=true;
+            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=Cookie");
+            PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
+            Object AdminBool;
+            AdminBool=admin;
+            if(AdminBool=="true"||AdminBool=="True"||AdminBool=="TRUE"){
+                return admin;
+            }
+            return null;
+        } else{
+            System.out.println("Database error: Incorrect cookie");
+            return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";
+        }
 
     }
 }
