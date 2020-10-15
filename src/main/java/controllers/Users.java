@@ -45,10 +45,10 @@ public class Users{
         int AdminIdHold = 0;
 
         try{
-            PreparedStatement AdminINCREMENT = Main.db.prepareStatement("SELECT AdminId FROM Users WHERE AdminId==AdminId");
+            PreparedStatement AdminINCREMENT = Main.db.prepareStatement("SELECT MAX(AdminId) FROM Users");
             if(Admin==true){
 
-                AdminINCREMENT.setInt(1,AdminIdHold);
+               AdminIdHold=(int) AdminINCREMENT;
 
             }else{
                 AdminINCREMENT=null;
@@ -57,7 +57,7 @@ public class Users{
             ps.setInt(1,UserId);
             ps.setString(2,Password);
             ps.setBoolean(3,Admin);
-            ps.setInt(4,AdminINCREMENT);
+            ps.setInt(4,thing);
             ps.setBoolean(5,false);
             return ("UserId="+UserId);
         } catch (Exception exception){
