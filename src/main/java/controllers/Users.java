@@ -40,16 +40,26 @@ public class Users{
     }
     @POST
     @Path("create")
-    public String UsersCreate(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password,@FormDataParam("Admin") Boolean Admin,@FormDataParam("AdminId") Integer AdminId, @FormDataParam("SessionToken") Boolean SessionToken){
+    public String UsersCreate(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin, @FormDataParam("AdminId") Integer AdminId) throws SQLException {
         System.out.println("Invoked Users.UsersCreate");
+        int AdminIdHold = 0;
+
         try{
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin, AdminId, SessionToken) VALUES (?,?,?,?,?)");
+            PreparedStatement AdminINCREMENT = Main.db.prepareStatement("SELECT AdminId FROM Users WHERE AdminId==AdminId");
+            if(Admin==true){
+
+                AdminINCREMENT.setInt(1,AdminIdHold);
+
+            }else{
+                AdminINCREMENT=null;
+            }
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin, AdminId,SessionToken) VALUES (?,?,?,?,?)");
             ps.setInt(1,UserId);
             ps.setString(2,Password);
             ps.setBoolean(3,Admin);
-            ps.setInt(4,AdminId);
-            ps.setBoolean(5,SessionToken);
-            return null;
+            ps.setInt(4,AdminINCREMENT);
+            ps.setBoolean(5,false);
+            return ("UserId="+UserId);
         } catch (Exception exception){
             System.out.println("Database error: " + exception.getMessage());
             return "{\"Error\": \"Unable to create new item, please see server console for more info.\"}";
@@ -58,11 +68,11 @@ public class Users{
     }
     @GET
     @Path("Hub")
-    public String UsersHub(@FormDataParam("UserId") Integer UserId, @FormDataParam("SessionToken") Boolean SessionToken){
+    public String UsersHub(@FormDataParam("UserId") Integer UserId, @CookieParam("SessionToken") Boolean SessionToken){
         System.out.println("Invoked Users.UsersHub");
         if (SessionToken==Boolean.TRUE){
 
-            return null;
+            return ("Status: Ok");
         } else{
             System.out.println("Database error: Incorrect cookie");
             return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";
@@ -84,11 +94,11 @@ public class Users{
             Object AdminBool;
             AdminBool=admin;
             if(AdminBool=="true"||AdminBool=="True"||AdminBool=="TRUE"){
-                return admin;
+                return ("Admin status given");
             }
-            return null;
+            return ("Success; Cookie created");
         } else{
-            System.out.println("Database error: Incorrect cookie");
+            System.out.println("Database error: Incorrect Password/Id");
             return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";
         }
 
