@@ -26,7 +26,7 @@ public class Users{
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT UserID, Admin FROM Users");
             ResultSet results = ps.executeQuery();
-            while (results.next()==true) {
+            while (results.next()) {
                 JSONObject row = new JSONObject();
                 row.put("UserID", results.getInt(1));
                 row.put("Admin", results.getString(2));
@@ -42,22 +42,24 @@ public class Users{
     @Path("create")
     public String UsersCreate(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin, @FormDataParam("AdminId") Integer AdminId) throws SQLException {
         System.out.println("Invoked Users.UsersCreate");
-        int AdminIdHold = 0;
+        int AdIdint = 0;
 
         try{
             PreparedStatement AdminINCREMENT = Main.db.prepareStatement("SELECT MAX(AdminId) FROM Users");
-            if(Admin==true){
+            if(Admin){
+                Object AdIdobj;
+                AdIdobj=AdminINCREMENT;
+                 AdIdint= (int) AdIdobj;
 
-               AdminIdHold=(int) AdminINCREMENT;
 
             }else{
-                AdminINCREMENT=null;
+                 AdIdint= Integer.parseInt(null);
             }
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin, AdminId,SessionToken) VALUES (?,?,?,?,?)");
             ps.setInt(1,UserId);
             ps.setString(2,Password);
             ps.setBoolean(3,Admin);
-            ps.setInt(4,thing);
+            ps.setInt(4,AdIdint);
             ps.setBoolean(5,false);
             return ("UserId="+UserId);
         } catch (Exception exception){
@@ -87,13 +89,14 @@ public class Users{
         Object CorrectPassword;
         CorrectPassword=ps;
         if (Password==CorrectPassword){
-            Boolean Cookie;
+            boolean Cookie;
             Cookie=true;
             PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=Cookie");
             PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
-            Object AdminBool;
-            AdminBool=admin;
-            if(AdminBool=="true"||AdminBool=="True"||AdminBool=="TRUE"){
+            Object Adminobj;
+            Adminobj=admin;
+            boolean AdminBool=(boolean)Adminobj;
+            if(AdminBool){
                 return ("Admin status given");
             }
             return ("Success; Cookie created");
