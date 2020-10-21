@@ -19,6 +19,10 @@ public class Logs {
     @GET
     @Path("create")
     public String LogsCreate(){
+        try{
 
+        }catch (Exception exception){
+
+        }
     }
 }
