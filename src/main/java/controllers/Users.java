@@ -42,24 +42,24 @@ public class Users{
     @Path("create")
     public String UsersCreate(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin, @FormDataParam("AdminId") Integer AdminId) throws SQLException {
         System.out.println("Invoked Users.UsersCreate");
-        int AdIdint = 0;
+        int AdIdInt;
 
         try{
             PreparedStatement AdminINCREMENT = Main.db.prepareStatement("SELECT MAX(AdminId) FROM Users");
             if(Admin){
                 Object AdIdobj;
                 AdIdobj=AdminINCREMENT;
-                 AdIdint= (int) AdIdobj;
+                 AdIdInt= (int) AdIdobj;
 
 
             }else{
-                 AdIdint= Integer.parseInt(null);
+                 AdIdInt= Integer.parseInt(null);
             }
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin, AdminId,SessionToken) VALUES (?,?,?,?,?)");
             ps.setInt(1,UserId);
             ps.setString(2,Password);
             ps.setBoolean(3,Admin);
-            ps.setInt(4,AdIdint);
+            ps.setInt(4,AdIdInt);
             ps.setBoolean(5,false);
             return ("UserId="+UserId);
         } catch (Exception exception){
