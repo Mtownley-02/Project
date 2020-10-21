@@ -23,7 +23,7 @@ public class Admins {
         int Lognum= input.nextInt();
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs WHERE LogId=Lognum");
-            return ps.toString();
+            return ("Success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
@@ -38,7 +38,7 @@ public class Admins {
         int Lognum= input.nextInt();
         try {
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId= Lognum");
-            return ps.toString();
+            return ("Success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"Error\": \"Unable to list items.  Error code xx.\"}";

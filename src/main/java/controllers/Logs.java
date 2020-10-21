@@ -16,13 +16,34 @@ import java.sql.SQLException;
 @Produces(MediaType.APPLICATION_JSON)
 
 public class Logs {
-    @GET
+    @POST
     @Path("create")
-    public String LogsCreate(){
+    public String LogsCreate(@PathParam("LogId") String LogId ,@PathParam("Title")String Title,@PathParam("Text")String Text ){
         try{
 
         }catch (Exception exception){
+            System.out.println("Log error: " + exception.getMessage());
+            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
+        }
+    }
+    @POST
+    @Path("view")
+    public String LogsCreate(@PathParam("LogId") String LogId ){
+        try{
 
+        }catch (Exception exception){
+            System.out.println("Log error: " + exception.getMessage());
+            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
+        }
+    }
+    @POST
+    @Path("delete")
+    public String LogsCreate(@PathParam("LogId") String LogId ){
+        try{
+
+        }catch (Exception exception){
+            System.out.println("Log error: " + exception.getMessage());
+            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
         }
     }
 }
