@@ -18,11 +18,9 @@ import java.sql.SQLException;
 public class Admins {
     @GET
     @Path("view")
-    public String AdminsView() throws SQLException {
-        System.out.println("Enter LogId:");
-        int Lognum= input.nextInt();
+    public String AdminsView(@FormDataParam("LogId") String LogId) throws SQLException {
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs WHERE LogId=Lognum");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs WHERE LogId=LogId");
             return ("Success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
@@ -33,11 +31,9 @@ public class Admins {
 
     @POST
     @Path("delete")
-    public String AdminsDelete() throws SQLException {
-        System.out.println("Enter LogId:");
-        int Lognum= input.nextInt();
+    public String AdminsDelete(@FormDataParam("LogId") String LogId) throws SQLException {
         try {
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId= Lognum");
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId= LogId");
             return ("Success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());

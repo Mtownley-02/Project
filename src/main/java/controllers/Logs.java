@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class Logs {
     @POST
     @Path("create")
-    public String LogsCreate(@PathParam("LogId") String LogId ,@PathParam("Title")String Title,@PathParam("Text")String Text ){
+    public String LogsCreate(@FormDataParam("LogId") String LogId ,@FormDataParam("Title") String Title,@FormDataParam("Text") String Text ){
         try{
 
         }catch (Exception exception){
@@ -28,9 +28,18 @@ public class Logs {
     }
     @POST
     @Path("view")
-    public String LogsCreate(@PathParam("LogId") String LogId ){
+    public String LogsView(@FormDataParam("LogId") String LogId ){
+        JSONArray response = new JSONArray();
         try{
-
+            PreparedStatement ps = Main.db.prepareStatement("SELECT Title,Text FROM Logs WHERE LogId=Lognum");
+            ResultSet results = ps.executeQuery();
+            while (results.next()) {
+                JSONObject row = new JSONObject();
+                row.put("Title", results.getInt(1));
+                row.put("Text", results.getString(2));
+                response.add(row);
+            }
+            return response.toString();
         }catch (Exception exception){
             System.out.println("Log error: " + exception.getMessage());
             return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
@@ -38,7 +47,7 @@ public class Logs {
     }
     @POST
     @Path("delete")
-    public String LogsCreate(@PathParam("LogId") String LogId ){
+    public String LogsCreate(@FormDataParam("LogId") String LogId ){
         try{
 
         }catch (Exception exception){
