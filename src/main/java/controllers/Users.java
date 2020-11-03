@@ -59,8 +59,8 @@ public class Users{
 
     }
     @GET
-    @Path("hub")
-    public String UsersHub(@FormDataParam("UserId") Integer UserId) throws SQLException {
+    @Path("hub/{UserId}")
+    public String UsersHub(@PathParam("UserId") Integer UserId) throws SQLException {
         System.out.println("Invoked Users.UsersHub");
         PreparedStatement SessionToken =Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==UserId");
         Object Tokenobj;

@@ -17,10 +17,10 @@ import java.sql.SQLException;
 
 public class Admins {
     @GET
-    @Path("view")
-    public String AdminsView(@FormDataParam("LogId") String LogId) throws SQLException {
+    @Path("view/{UserId}")
+    public String AdminsView(@PathParam("UserId") String LogId) throws SQLException {
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs WHERE LogId=LogId");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs WHERE UserId==UserId");
             return ("Success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
