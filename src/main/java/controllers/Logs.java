@@ -18,9 +18,16 @@ import java.sql.SQLException;
 public class Logs {
     @POST
     @Path("create")
-    public String LogsCreate(@FormDataParam("LogId") String LogId ,@FormDataParam("Title") String Title,@FormDataParam("Text") String Text ){
+    public String LogsCreate(@FormDataParam("LogId") Integer LogId ,@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") Integer UserId, @FormDataParam("DateAdded") String DateAdded, @FormDataParam("LogURL") String LogURL ){
         try{
-
+            PreparedStatement ps =Main.db.prepareStatement("INSERT INTO Logs(LogId, Title, Text, UserId, DateAdded, LogURL  VALUES (?,?,?,?,?,?))");
+            ps.setInt(1,LogId);
+            ps.setString(2,Title);
+            ps.setString(3,Text);
+            ps.setInt(4,UserId);
+            ps.setString(5,DateAdded);
+            ps.setString(6,LogURL);
+            return ("Success");
         }catch (Exception exception){
             System.out.println("Log error: " + exception.getMessage());
             return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
@@ -47,8 +54,11 @@ public class Logs {
     }
     @POST
     @Path("delete")
-    public String LogsCreate(@FormDataParam("LogId") String LogId ){
+    public String LogsDelete(@FormDataParam("LogId") String LogId ){
         try{
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId=Lognum");
+            ResultSet results = ps.executeQuery();
+            return ("Success");
 
         }catch (Exception exception){
             System.out.println("Log error: " + exception.getMessage());

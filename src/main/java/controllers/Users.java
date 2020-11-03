@@ -40,7 +40,7 @@ public class Users{
     }
     @POST
     @Path("create")
-    public String UsersCreate(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin, @FormDataParam("AdminId") Integer AdminId) throws SQLException {
+    public String UsersCreate(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin) throws SQLException {
         System.out.println("Invoked Users.UsersCreate");
         int AdIdInt;
 
@@ -63,16 +63,20 @@ public class Users{
             ps.setBoolean(5,false);
             return ("UserId="+UserId);
         } catch (Exception exception){
-            System.out.println("Database error: " + exception.getMessage());
+            System.out.println("Error: " + exception.getMessage());
             return "{\"Error\": \"Unable to create new item, please see server console for more info.\"}";
         }
 
     }
     @GET
-    @Path("Hub")
-    public String UsersHub(@FormDataParam("UserId") Integer UserId, @CookieParam("SessionToken") Boolean SessionToken){
+    @Path("hub")
+    public String UsersHub(@FormDataParam("UserId") Integer UserId) throws SQLException {
         System.out.println("Invoked Users.UsersHub");
-        if (SessionToken==Boolean.TRUE){
+        PreparedStatement SessionToken =Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==UserId");
+        Object Tokenobj;
+        Tokenobj=SessionToken;
+        boolean BoolToken= (boolean) Tokenobj;
+        if (BoolToken){
 
             return ("Status: Ok");
         } else{
@@ -82,7 +86,7 @@ public class Users{
 
     }
     @POST
-    @Path("AttemptLogin")
+    @Path("attemptlogin")
     public String UsersAttemptLogin(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password) throws SQLException {
         System.out.println("Invoked Users.UsersAttemptLogin");
         PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId==UserId ");
