@@ -45,22 +45,12 @@ public class Users{
         int AdIdInt;
 
         try{
-            PreparedStatement AdminINCREMENT = Main.db.prepareStatement("SELECT MAX(AdminId) FROM Users");
-            if(Admin){
-                Object AdIdobj;
-                AdIdobj=AdminINCREMENT;
-                 AdIdInt= (int) AdIdobj;
 
-
-            }else{
-                 AdIdInt= Integer.parseInt(null);
-            }
-            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin, AdminId,SessionToken) VALUES (?,?,?,?,?)");
+            PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin,SessionToken) VALUES (?,?,?,?)");
             ps.setInt(1,UserId);
             ps.setString(2,Password);
             ps.setBoolean(3,Admin);
-            ps.setInt(4,AdIdInt);
-            ps.setBoolean(5,false);
+            ps.setBoolean(4,false);
             return ("UserId="+UserId);
         } catch (Exception exception){
             System.out.println("Error: " + exception.getMessage());
@@ -91,11 +81,15 @@ public class Users{
         System.out.println("Invoked Users.UsersAttemptLogin");
         PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId==UserId ");
         Object CorrectPassword;
+        System.out.println(ps);
         CorrectPassword=ps;
-        if (Password==CorrectPassword){
+        System.out.println(CorrectPassword);
+        String PassString= CorrectPassword.toString();
+        System.out.println(PassString);
+        if (Password.equals(PassString)){
             boolean Cookie;
             Cookie=true;
-            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=Cookie");
+            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users WHERE SessionToken=Cookie");
             PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
             Object Adminobj;
             Adminobj=admin;
