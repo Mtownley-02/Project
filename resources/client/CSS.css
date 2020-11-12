@@ -8,7 +8,7 @@ textbox{
     background-color: white;
 }
 #top, #bottom, #left, #right {
-    background: #84c8db;
+    background: #b4da55;
     position: fixed;
 }
 #left, #right {
