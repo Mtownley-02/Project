@@ -20,12 +20,8 @@ textbox{
 #left { left: 0; }
 #right { right: 0; }
 
-#top, #bottom {
-    left: 0; right: 0;
-    height: 50px;
-    background-color:#333;
-}
-#top { top: 0; }
+
+
 #bottom { bottom: 0; }
 
 .header {
