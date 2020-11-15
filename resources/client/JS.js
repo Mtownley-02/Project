@@ -10,6 +10,14 @@ function myFunction() {
         navbar.classList.remove("sticky");
     }
 }
+$(window).scroll(function(){
+    if ($(window).scrollTop() >= 300) {
+        $('navbar').addClass('fixed-header');
+    }
+    else {
+        $('navbar').removeClass('fixed-header');
+    }
+});
 function attemptLogin(){
     console.log("invoked attemptLogin");
     const formData= new FormData(document.getElementById('Login'));
