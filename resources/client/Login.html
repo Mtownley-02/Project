@@ -2,29 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
     <link rel="stylesheet" type="text/css" href="CSS.css"/>
     <script type="text/javascript" src="JS.js"></script>
 </head>
 <body>
+
 <div id="left"></div>
 <div id="right"></div>
 <div id="top"></div>
 <div id="bottom"></div>
-<div class="header" id="myHeader">
-    <h2>My Header &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Create Log &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Edit Log</h2>
-</div>
 <br>
 <br>
 <br>
 <br>
 <br>
-<h1>User x</h1>
-<br>
-<br>
-<br>
-<br>
-<br>
-
+<form id="Login">
+    UserId: <input type="text" name="UserId">
+    Password: <input type="text" name="Password">
+</form>
+<button id="Login" onclick='attemptlogin();'>Add User</button>
 </body>
 </html>

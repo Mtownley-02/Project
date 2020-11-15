@@ -15,3 +15,9 @@ function myFunction() {
         header.classList.remove("sticky");
     }
 }
+function attemptLogin(){
+    console.log("invoked attemptLogin");
+    const UserID=document.getElementById("UserId").value;
+    const url="users/attemptLogin";
+
+}

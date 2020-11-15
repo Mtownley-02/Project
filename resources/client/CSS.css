@@ -49,3 +49,6 @@ textbox{
 .sticky + .content {
     padding-top: 0px;
 }
+#Login{
+    text-align: center;
+}
