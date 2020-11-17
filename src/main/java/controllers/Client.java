@@ -8,7 +8,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-@Path("/")
+@Path("client/")
 public class Client {
 
     @GET

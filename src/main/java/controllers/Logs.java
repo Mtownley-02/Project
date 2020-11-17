@@ -27,6 +27,7 @@ public class Logs {
             ps.setInt(4,UserId);
             ps.setString(5,DateAdded);
             ps.setString(6,LogURL);
+            ps.executeUpdate();
             return ("Success");
         }catch (Exception exception){
             System.out.println("Log error: " + exception.getMessage());

@@ -51,6 +51,8 @@ public class Users{
             ps.setString(2,Password);
             ps.setBoolean(3,Admin);
             ps.setBoolean(4,false);
+            ps.executeUpdate();
+
             return ("UserId="+UserId);
         } catch (Exception exception){
             System.out.println("Error: " + exception.getMessage());
@@ -63,6 +65,7 @@ public class Users{
     public String UsersHub(@PathParam("UserId") Integer UserId) throws SQLException {
         System.out.println("Invoked Users.UsersHub");
         PreparedStatement SessionToken =Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==UserId");
+        SessionToken.executeQuery();
         Object Tokenobj;
         Tokenobj=SessionToken;
         boolean BoolToken= (boolean) Tokenobj;
@@ -91,6 +94,7 @@ public class Users{
             Cookie=true;
             PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users WHERE SessionToken=Cookie");
             PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
+            admin.executeQuery();
             Object Adminobj;
             Adminobj=admin;
             boolean AdminBool=(boolean)Adminobj;
