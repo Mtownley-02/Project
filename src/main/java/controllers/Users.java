@@ -83,11 +83,10 @@ public class Users{
     public String UsersAttemptLogin(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password) throws SQLException {
         System.out.println("Invoked Users.UsersAttemptLogin");
         PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId==UserId ");
-        Object CorrectPassword;
-        System.out.println(ps);
-        CorrectPassword=ps;
-        System.out.println(CorrectPassword);
-        String PassString= CorrectPassword.toString();
+        ResultSet passkey=ps.executeQuery();
+        JSONObject row = new JSONObject();
+        row.put("Admin", passkey.getString(1));
+        String PassString=passkey.toString();
         System.out.println(PassString);
         if (Password.equals(PassString)){
             boolean Cookie;
@@ -96,18 +95,20 @@ public class Users{
             PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
             ResultSet results = admin.executeQuery();
             cookieupdate.executeUpdate();
-
+            JSONObject row1 = new JSONObject();
+            row1.put("Admin", results.getString(1));
+            String adstring=results.toString();
             Object Adminobj;
             Adminobj=admin;
             boolean AdminBool=(boolean)Adminobj;
             if(AdminBool){
-                return ("Admin status given");
+                return (adstring);
             }
             return ("Success; Cookie created");
-            row.put("Admin", results.getString(2));
+
         } else{
             System.out.println("Database error: Incorrect Password/Id");
-            return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";
+            return PassString;
         }
 
     }
