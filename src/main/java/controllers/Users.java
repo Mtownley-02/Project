@@ -94,7 +94,9 @@ public class Users{
             Cookie=true;
             PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users WHERE SessionToken=Cookie");
             PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
-            admin.executeQuery();
+            ResultSet results = admin.executeQuery();
+            cookieupdate.executeUpdate();
+
             Object Adminobj;
             Adminobj=admin;
             boolean AdminBool=(boolean)Adminobj;
@@ -102,6 +104,7 @@ public class Users{
                 return ("Admin status given");
             }
             return ("Success; Cookie created");
+            row.put("Admin", results.getString(2));
         } else{
             System.out.println("Database error: Incorrect Password/Id");
             return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";
