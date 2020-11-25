@@ -54,8 +54,8 @@ public class Users{
             ps.setBoolean(3,Admin);
             ps.setBoolean(4,false);
             ps.executeUpdate();
-
-            return ("UserId="+UserId);
+            String UserID=Integer.toString(UserId);
+            return (UserID);
         } catch (Exception exception){
             System.out.println("Error: " + exception.getMessage());
             return "{\"Error\": \"Unable to create new item, please see server console for more info.\"}";
@@ -91,7 +91,7 @@ public class Users{
         if (Password.equals(PassString)){
             boolean Cookie;
             Cookie=true;
-            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users WHERE SessionToken=Cookie");
+            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=Cookie");
             PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
             ResultSet results = admin.executeQuery();
             cookieupdate.executeUpdate();

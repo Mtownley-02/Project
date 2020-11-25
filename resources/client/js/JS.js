@@ -37,6 +37,7 @@ function createUser(Password,Password1) {
             body: formData,
         }).then(response =>{
             return response.json()
+
         } )
     }else {
         console.log('Passwords do not match')
