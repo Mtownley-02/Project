@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Title</title>
     <link rel="stylesheet" type="text/css" href="client/css/CSS.css"/>
     <script type="text/javascript" src="client/js/JS.js"></script>
 </head>
 <body>
-
 <div id="left"></div>
 <div id="right"></div>
 <br>
@@ -16,13 +15,11 @@
 <br>
 <br>
 <form id="Login">
-    UserId: <input type="text" name="UserId">
     Password: <input type="text" name="Password">
+    Confirm Password: <input type="text" name="Password1">
 </form>
 <div class="center">
-   <button onclick='attemptLogin(UserId,Password);'>Log In</button>
-    <button onclick='goTocreateUser();'>Create User</button>
+    <button onclick='createUser(Password,Password1);'>Create User</button>
 </div>
-
 </body>
 </html>
