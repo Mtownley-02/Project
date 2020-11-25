@@ -21,6 +21,7 @@ public class Admins {
     public String AdminsView(@PathParam("UserId") String LogId) throws SQLException {
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs WHERE UserId==UserId");
+            ps.executeQuery();
             return ("Success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
@@ -34,6 +35,7 @@ public class Admins {
     public String AdminsDelete(@FormDataParam("LogId") String LogId) throws SQLException {
         try {
             PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId= LogId");
+            ps.executeQuery();
             return ("Success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());

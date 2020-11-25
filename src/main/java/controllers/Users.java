@@ -40,14 +40,16 @@ public class Users{
     }
     @POST
     @Path("create")
-    public String UsersCreate(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin) throws SQLException {
+    public String UsersCreate(@FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin) throws SQLException {
         System.out.println("Invoked Users.UsersCreate");
         int AdIdInt;
 
         try{
-
+            PreparedStatement UserIncrement= Main.db.prepareStatement("SELECT MAX(UserId) FROM Users");
+            ResultSet UserIdset=UserIncrement.executeQuery();
+            int UserId = UserIdset.getInt(1);
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin,SessionToken) VALUES (?,?,?,?)");
-            ps.setInt(1,UserId);
+            ps.setInt(1,UserId+1);
             ps.setString(2,Password);
             ps.setBoolean(3,Admin);
             ps.setBoolean(4,false);
@@ -84,8 +86,6 @@ public class Users{
         System.out.println("Invoked Users.UsersAttemptLogin");
         PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId==UserId ");
         ResultSet passkey=ps.executeQuery();
-        JSONObject row = new JSONObject();
-        row.put("Admin", passkey.getString(1));
         String PassString=passkey.toString();
         System.out.println(PassString);
         if (Password.equals(PassString)){
