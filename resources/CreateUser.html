@@ -14,9 +14,15 @@
 <br>
 <br>
 <br>
+<form action="action_page.php">
+    Enter Adm No:
+    <input type="text" name="admNo" pattern="[0-9]{6}[A-Za-z]{1}" title="6 digits and 1 letter" required/>
+    <b><!-- can be used to insert text via pseudo element where input do not--></b>
+    <input type="submit" />
+</form>
 <form id="Login">
-    Password: <input type="text" name="Password">
-    Confirm Password: <input type="text" name="Password1">
+    Password: <input type="password" name="Password">
+    Confirm Password: <input type="password" name="Password1">
 </form>
 <div class="center">
     <button onclick='createUser(Password,Password1);'>Create User</button>
