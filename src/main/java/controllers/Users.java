@@ -75,6 +75,7 @@ public class Users{
         ResultSet result =SessionToken.executeQuery();
         boolean BoolToken;
         BoolToken=result.getBoolean(1);
+        System.out.println(BoolToken);
         if (BoolToken){
 
             return ("Status: Ok");
