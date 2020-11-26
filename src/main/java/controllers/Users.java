@@ -47,9 +47,14 @@ public class Users{
         try{
             PreparedStatement UserIncrement= Main.db.prepareStatement("SELECT MAX(UserId) FROM Users");
             ResultSet UserIdset=UserIncrement.executeQuery();
-            int UserId = UserIdset.getInt(1);
+            int UserId = UserIdset.getInt(1)+1;
+            if(Admin==true){
+                Admin=true;
+            }else{
+                Admin=null;
+            }
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin,SessionToken) VALUES (?,?,?,?)");
-            ps.setInt(1,UserId+1);
+            ps.setInt(1,UserId);
             ps.setString(2,Password);
             ps.setBoolean(3,Admin);
             ps.setBoolean(4,false);
@@ -67,10 +72,9 @@ public class Users{
     public String UsersHub(@PathParam("UserId") Integer UserId) throws SQLException {
         System.out.println("Invoked Users.UsersHub");
         PreparedStatement SessionToken =Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==UserId");
-        SessionToken.executeQuery();
-        Object Tokenobj;
-        Tokenobj=SessionToken;
-        boolean BoolToken= (boolean) Tokenobj;
+        ResultSet result =SessionToken.executeQuery();
+        boolean BoolToken;
+        BoolToken=result.getBoolean(1);
         if (BoolToken){
 
             return ("Status: Ok");
@@ -85,24 +89,23 @@ public class Users{
     public String UsersAttemptLogin(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password) throws SQLException {
         System.out.println("Invoked Users.UsersAttemptLogin");
         PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId==UserId ");
-        ResultSet passkey=ps.executeQuery();
-        String PassString=passkey.toString();
-        System.out.println(PassString);
+        ResultSet passset=ps.executeQuery();
+        String PassString=passset.getString(1);
         if (Password.equals(PassString)){
-            boolean Cookie;
-            Cookie=true;
-            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=Cookie");
+            boolean Sessiontoken;
+            Sessiontoken=true;
+            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=Sessiontoken");
             PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
             ResultSet results = admin.executeQuery();
             cookieupdate.executeUpdate();
             JSONObject row1 = new JSONObject();
             row1.put("Admin", results.getString(1));
-            String adstring=results.toString();
+            String adstring=results.getString(1);
             Object Adminobj;
-            Adminobj=admin;
-            boolean AdminBool=(boolean)Adminobj;
-            if(AdminBool){
-                return (adstring);
+            Adminobj=adstring;
+            //boolean AdminBool=(boolean)Adminobj;
+            if(adstring != null){
+                return ("admin");
             }
             return ("Success; Cookie created");
 
