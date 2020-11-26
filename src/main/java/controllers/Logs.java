@@ -22,10 +22,12 @@ public class Logs {
 
     @POST
     @Path("create")
-    public String LogsCreate(@FormDataParam("LogId") Integer LogId ,@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") Integer UserId,@FormDataParam("LogURL") String LogURL ){
+    public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") Integer UserId,@FormDataParam("LogURL") String LogURL ) throws SQLException {
 
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            LocalDateTime now = LocalDateTime.now();
+            PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
+            ResultSet LogIdset=LogIncrement.executeQuery();
+            int LogId = LogIdset.getInt(1)+1;
             try{
             PreparedStatement ps =Main.db.prepareStatement("INSERT INTO Logs(LogId, Title, Text, UserId, DateAdded, LogURL  VALUES (?,?,?,?,?,?))");
             ps.setInt(1,LogId);
@@ -46,14 +48,15 @@ public class Logs {
     public String LogsView(@FormDataParam("LogId") String LogId ){
         JSONArray response = new JSONArray();
         try{
-            PreparedStatement ps = Main.db.prepareStatement("SELECT Title,Text FROM Logs WHERE LogId=Lognum");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT Title,Text FROM Logs WHERE LogId==LogId");
             ResultSet results = ps.executeQuery();
             while (results.next()) {
                 JSONObject row = new JSONObject();
-                row.put("Title", results.getInt(1));
+                row.put("Title", results.getString(1));
                 row.put("Text", results.getString(2));
                 response.add(row);
             }
+            System.out.println(response.toString());
             return response.toString();
         }catch (Exception exception){
             System.out.println("Log error: " + exception.getMessage());
@@ -62,15 +65,15 @@ public class Logs {
     }
     @POST
     @Path("delete")
-    public String LogsDelete(@FormDataParam("LogId") String LogId ){
-        try{
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId=Lognum");
-            ResultSet results = ps.executeQuery();
+    public String LogsDelete(@FormDataParam("LogId") String LogId) throws SQLException {
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId==LogId");
+            ps.executeUpdate();
             return ("Success");
-
-        }catch (Exception exception){
-            System.out.println("Log error: " + exception.getMessage());
-            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"Error\": \"Unable to delete items.  Error code xx.\"}";
         }
+
     }
 }

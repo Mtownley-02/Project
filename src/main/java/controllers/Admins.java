@@ -21,8 +21,9 @@ public class Admins {
     public String AdminsView(@PathParam("UserId") String LogId) throws SQLException {
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs WHERE UserId==UserId");
-            ps.executeQuery();
-            return ("Success");
+            ResultSet results=ps.executeQuery();
+            String restring = results.getString(1);
+            return (restring);
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
@@ -34,12 +35,12 @@ public class Admins {
     @Path("delete")
     public String AdminsDelete(@FormDataParam("LogId") String LogId) throws SQLException {
         try {
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId= LogId");
-            ps.executeQuery();
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId==LogId");
+            ps.executeUpdate();
             return ("Success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
-            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
+            return "{\"Error\": \"Unable to delete items.  Error code xx.\"}";
         }
 
     }
