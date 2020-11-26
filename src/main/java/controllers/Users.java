@@ -93,18 +93,14 @@ public class Users{
         ResultSet passset=ps.executeQuery();
         String PassString=passset.getString(1);
         if (Password.equals(PassString)){
-            boolean Sessiontoken;
-            Sessiontoken=true;
-            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=Sessiontoken");
+            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=true ");
             PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
             ResultSet results = admin.executeQuery();
             cookieupdate.executeUpdate();
             JSONObject row1 = new JSONObject();
             row1.put("Admin", results.getString(1));
             String adstring=results.getString(1);
-            Object Adminobj;
-            Adminobj=adstring;
-            //boolean AdminBool=(boolean)Adminobj;
+
             if(adstring != null){
                 return ("admin");
             }

@@ -20,12 +20,12 @@ function attemptLogin(){
         if(response.hasOwnProperty("Error")){
             console.log(JSON.stringify(response));
         }else{
-            window.open("/client/UserS.html")
+            window.open("/UserS.html")
         }
     })
 }
 function goTocreateUser() {
-    window.open("/client.CreateUser.html")
+    window.open("/CreateUser.html")
 }
 function createUser(Password,Password1) {
     console.log("invoked createUser");
