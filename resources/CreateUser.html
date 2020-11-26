@@ -14,12 +14,23 @@
 <br>
 <br>
 <br>
-<form action="action_page.php">
-    Enter Adm No:
-    <input type="text" name="admNo" pattern="[0-9]{6}[A-Za-z]{1}" title="6 digits and 1 letter" required/>
-    <b><!-- can be used to insert text via pseudo element where input do not--></b>
-    <input type="submit" />
-</form>
+
+<p>Password:</p>
+<input name="password" required="required" type="password" id="password" />
+<p>Confirm Password:</p>
+<input name="password_confirm" required="required" type="password" id="password_confirm" oninput="check(this)" />
+<script language='javascript' type='text/javascript'>
+    function check(input) {
+        if (input.value != document.getElementById('password').value) {
+            input.setCustomValidity('Password Must be Matching.');
+        } else {
+            // input is valid -- reset the error message
+            input.setCustomValidity('');
+        }
+    }
+</script>
+<br /><br />
+<input type="submit" />
 <form id="Login">
     Password: <input type="password" name="Password">
     Confirm Password: <input type="password" name="Password1">
