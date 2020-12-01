@@ -11,32 +11,31 @@ function attemptLogin(){
     console.log("invoked attemptLogin");
     const formData= new FormData(document.getElementById('Login'));
     let url="Users/attemptLogin";
-    fetch(url, {
+    fetch(url,{
         method: "POST",
         body: formData,
-    }).then(response =>{
-        return response.json()
     }).then(response =>{
         if(response.hasOwnProperty("Error")){
             console.log(JSON.stringify(response));
         }else{
-            window.open("/UserS.html")
+            window.open("UserS.html");
         }
     })
 }
 function goTocreateUser() {
-    window.open("/CreateUser.html")
+    window.open("CreateUser.html")
 }
 function createUser(Password,Password1) {
     console.log("invoked createUser");
     const formData= new FormData(document.getElementById('Create'));
     let url="Users/create";
-    if(Password==Password1){
+    if(Password===Password1){
         fetch(url, {
             method: "POST",
             body: formData,
         }).then(response =>{
-            return response.json()
+
+            window.open("UserS.html");
 
         } )
     }else {

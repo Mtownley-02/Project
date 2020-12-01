@@ -22,20 +22,18 @@ public class Logs {
 
     @POST
     @Path("create")
-    public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") Integer UserId,@FormDataParam("LogURL") String LogURL ) throws SQLException {
+    public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") Integer UserId) throws SQLException {
 
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
-            ResultSet LogIdset=LogIncrement.executeQuery();
-            int LogId = LogIdset.getInt(1)+1;
-            try{
-            PreparedStatement ps =Main.db.prepareStatement("INSERT INTO Logs(LogId, Title, Text, UserId, DateAdded, LogURL  VALUES (?,?,?,?,?,?))");
-            ps.setInt(1,LogId);
+
+        PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
+        ResultSet LogIdset=LogIncrement.executeQuery();
+        int LogId = LogIdset.getInt(1);
+        try{
+            PreparedStatement ps =Main.db.prepareStatement("INSERT INTO Logs(LogId, Title, Text, UserId) VALUES (?,?,?,?)");
+            ps.setInt(1,LogId+1);
             ps.setString(2,Title);
             ps.setString(3,Text);
             ps.setInt(4,UserId);
-            ps.setString(5, String.valueOf(dtf));
-            ps.setString(6,LogURL);
             ps.executeUpdate();
             return ("Success");
         }catch (Exception exception){
