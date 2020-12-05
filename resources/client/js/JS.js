@@ -105,7 +105,7 @@ function GetLogs() {
 }
 
 function goToLogsView() {
-    window.open("LogsEdit.html");
+    window.open("LogEdit.html");
 }
 function createUser(Password,Password1) {
     console.log("invoked createUser");
