@@ -63,10 +63,31 @@ function adminDelete() {
         return response;
     } )
 }
-function adminViewUsers() {
 
+
+function adminViewUsers() {
+    console.log("invoked adminViewUsers");
+    const url="Admins/view/";
+    fetch(url, {
+        method: "GET",
+    }).then(response => {
+        return response.json();                 //return response as JSON
+    }).then(response => {
+        if (response.hasOwnProperty("Error")) { //checks if response from the web server has an "Error"
+            alert(JSON.stringify(response));    // if it does, convert JSON object to string and alert (pop up window)
+        } else {
+            formatUsersList(response);          //this function will create an HTML table of the data (as per previous lesson)
+        }
+    });
 }
 
+function formatUsersList(Array){
+    let dataHTML = "";
+    for (let item of Array) {
+        dataHTML += "<tr><td>" + item.UserID + "<td><td>" + item.Admin + "<td><td>" + item.SessionToken + "<tr><td>";
+    }
+    document.getElementById("UsersTable").innerHTML = dataHTML;
+}
 
 
 function GetLogs() {

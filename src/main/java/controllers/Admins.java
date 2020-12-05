@@ -17,25 +17,28 @@ import java.sql.SQLException;
 
 public class Admins {
     @GET
-    @Path("view/{UserId}")
-    public String AdminsView(@PathParam("UserId") String LogId) throws SQLException {
+    @Path("view/")
+    public String[] AdminsView() throws SQLException {
+        String[] resultarray= new String[0];
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs WHERE UserId==UserId");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users");
             ResultSet results=ps.executeQuery();
-            String restring = results.getString(1);
-            return (restring);
+            resultarray[0]=results.getString(1);
+            resultarray[1]=results.getString(3);
+            resultarray[2]=results.getString(4);
+            return (resultarray);
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
-            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
+            return null;
         }
 
     }
 
     @POST
     @Path("delete")
-    public String AdminsDelete(@FormDataParam("LogId") String LogId) throws SQLException {
+    public String AdminsDelete(@FormDataParam("UserId") String UserId) throws SQLException {
         try {
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId==LogId");
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserId==UserId");
             ps.executeUpdate();
             return ("Success");
         } catch (Exception exception) {
