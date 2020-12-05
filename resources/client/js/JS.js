@@ -29,15 +29,39 @@ function goTocreateUser() {
 
 
 function logsCreate() {
-
+    console.log("invoked logsCreate");
+    const formData= new FormData(document.getElementById('LogCreate'));
+    let url="Logs/create";
+        fetch(url, {
+            method: "POST",
+            body: formData,
+        }).then(response =>{
+            return response;
+        } )
 }
 
 function logsDelete() {
-
+    console.log("invoked logsDelete");
+    const formData= new FormData(document.getElementById('LogDelete'));
+    let url="Logs/delete";
+    fetch(url, {
+        method: "POST",
+        body: formData,
+    }).then(response =>{
+        return response;
+    } )
 }
 
 function adminDelete() {
-
+    console.log("invoked adminDelete");
+    const formData= new FormData(document.getElementById('AdminDelete'));
+    let url="Admins/delete";
+    fetch(url, {
+        method: "POST",
+        body: formData,
+    }).then(response =>{
+        return response;
+    } )
 }
 function adminViewUsers() {
 
@@ -53,14 +77,14 @@ function GetLogs() {
         method: "POST",
         body: formData,
     }).then(response=>{
-        document.LogUpdate.Title.value = response[0];
+        document.getElementById('LogUpdate').value = response[0];
     }).then(response=>{
-        document.LogUpdate.Text.value = response[1];
+        document.getElementById('LogUpdate').value = response[1];
     })
 }
 
 function goToLogsView() {
-    window.open("LogsView.html");
+    window.open("LogsEdit.html");
 }
 function createUser(Password,Password1) {
     console.log("invoked createUser");

@@ -109,3 +109,9 @@ input:invalid+b+[type="submit"] {
 h4{
     color:black;
 }
+
+.resizedbox{
+    width: 400px;
+    height: 600px;
+    padding: 1px;
+}

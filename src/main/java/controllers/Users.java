@@ -71,17 +71,22 @@ public class Users{
     @Path("hub/{UserId}")
     public String UsersHub(@PathParam("UserId") Integer UserId) throws SQLException {
         System.out.println("Invoked Users.UsersHub");
-        PreparedStatement SessionToken =Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==UserId");
-        ResultSet result =SessionToken.executeQuery();
-        boolean BoolToken;
-        BoolToken=result.getBoolean(1);
-        System.out.println(BoolToken);
-        if (BoolToken){
+        try {
+            PreparedStatement SessionToken = Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==UserId");
+            ResultSet result = SessionToken.executeQuery();
+            boolean BoolToken;
+            BoolToken = result.getBoolean(1);
+            System.out.println(BoolToken);
+            if (BoolToken) {
 
-            return ("Status: Ok");
-        } else{
-            System.out.println("Database error: Incorrect cookie");
-            return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";
+                return ("Status: Ok");
+            } else {
+                System.out.println("Database error: Incorrect cookie");
+                return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";
+            }
+        }catch (Exception exception){
+            System.out.println("Error: " + exception.getMessage());
+            return "{\"Error\": \"Unable to create new item, please see server console for more info.\"}";
         }
 
     }
