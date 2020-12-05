@@ -68,7 +68,7 @@ public class Logs {
     @POST
     @Path("view")
     public String[] LogsView(@FormDataParam("LogId") String LogId ){
-        String[] response = new;
+        String[] response = new String[0];
         try{
             PreparedStatement ps = Main.db.prepareStatement("SELECT Title,Text FROM Logs WHERE LogId==LogId");
             ResultSet results = ps.executeQuery();

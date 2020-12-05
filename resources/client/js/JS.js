@@ -26,9 +26,7 @@ function goTocreateUser() {
     window.open("CreateUser.html")
 }
 
-function logsView(){
-    
-}
+
 
 function logsCreate() {
 
@@ -44,8 +42,21 @@ function adminDelete() {
 function adminViewUsers() {
 
 }
-function GetLogs() {
 
+
+
+function GetLogs() {
+    console.log("invoked GetLogs")
+    const formData= new FormData(document.getElementById('LogUpdate'))
+    let url="Logs/view"
+    fetch(url,{
+        method: "POST",
+        body: formData,
+    }).then(response=>{
+        document.LogUpdate.Title.value = response[0];
+    }).then(response=>{
+        document.LogUpdate.Text.value = response[1];
+    })
 }
 
 function goToLogsView() {

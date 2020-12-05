@@ -20,14 +20,14 @@
     <br>
     <br>
     <br>
-    <ul onload="logsView()" name="Logs">Logs:
-        <li>
+    <form id="getLog">
 
-        </li>
-    </ul>
+    </form>
+    <button onclick="logsView()" name="Logs">Load Log</button>
     <form id="LogUpdate">
-        UserId: <input type="text" name="Title">
-        Password: <input type="text" name="Text">
+        LogId: <input type="text" name="LogId">
+        Title: <input type="text" name="Title">
+        Text: <input type="text" name="Text">
     </form>
     <button onclick="logsUpdate()" >Update Log</button>
 </div>
