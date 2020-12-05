@@ -25,6 +25,28 @@ function attemptLogin(){
 function goTocreateUser() {
     window.open("CreateUser.html")
 }
+
+function logsView(){
+    
+}
+
+function logsCreate() {
+
+}
+
+function logsDelete() {
+
+}
+
+function adminDelete() {
+
+}
+function adminViewUsers() {
+
+}
+function userHubt() {
+
+}
 function createUser(Password,Password1) {
     console.log("invoked createUser");
     const formData= new FormData(document.getElementById('Create'));
