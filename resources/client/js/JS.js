@@ -44,7 +44,7 @@ function adminDelete() {
 function adminViewUsers() {
 
 }
-function userHubt() {
+function GetLogs() {
 
 }
 function createUser(Password,Password1) {

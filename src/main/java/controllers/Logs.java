@@ -7,6 +7,7 @@ import server.Main;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +20,25 @@ import java.time.LocalDateTime;
 @Produces(MediaType.APPLICATION_JSON)
 
 public class Logs {
+    @POST
+    @Path("GetTitle")
+    public String[] GetTitle(@FormDataParam("UserId") Integer UserId){
+        String[] array = new String[0];
+        PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
+        ResultSet LogIdset=LogIncrement.executeQuery();
+        int LogId = LogIdset.getInt(1);
+        try {
+            PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==UserId");
+            ResultSet results=Titles.executeQuery();
+            for(int x=0;x<LogId;x++){
+                array[x]=results.getString(x);
+            }
+            return array;
+        } catch (Exception exception) {
+            System.out.println("Log error: " + exception.getMessage());
+            return["{\"Error\": \"Unable to list items.  Error code xx.\"}"];
+        }
+    }
 
     @POST
     @Path("create")
