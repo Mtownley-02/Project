@@ -23,11 +23,13 @@
     <form id="getLog">
 
     </form>
-    <button onclick="logsView()" name="Logs">Load Log</button>
     <br>
     <br>
     <form id="LogUpdate">
         LogId:<input type="text" name="LogId">
+        <br>
+        <br>
+        <button onclick="GetLogs()" name="Logs">Load Log</button>
         <br>
         <br>
          Title  : <input type="text" name="Title">
@@ -37,6 +39,7 @@
         <br>
         <textarea name="Text" class="resizedbox"></textarea>
     </form>
+
     <button onclick="logsUpdate()" >Update Log</button>
 </div>
 </body>
