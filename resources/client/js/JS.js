@@ -47,6 +47,10 @@ function adminViewUsers() {
 function GetLogs() {
 
 }
+
+function goToLogsView() {
+    window.open("LogsView.html");
+}
 function createUser(Password,Password1) {
     console.log("invoked createUser");
     const formData= new FormData(document.getElementById('Create'));
@@ -58,7 +62,7 @@ function createUser(Password,Password1) {
         }).then(response =>{
 
             window.open("UserS.html");
-
+            return response;
         } )
     }else {
         console.log('Passwords do not match')

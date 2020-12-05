@@ -102,3 +102,10 @@ input:invalid+b:before {
 input:invalid+b+[type="submit"] {
     display: none; /* hide input submit untill pattern matches */
 }
+#valid{
+    color:#ebc26c;
+}
+
+.invalid{
+    color:black;
+}

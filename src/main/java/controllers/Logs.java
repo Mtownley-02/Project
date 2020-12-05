@@ -22,13 +22,16 @@ import java.time.LocalDateTime;
 public class Logs {
     @POST
     @Path("GetTitle")
-    public String[] GetTitle(@FormDataParam("UserId") Integer UserId){
+    public String[] GetTitle() throws SQLException{
         String[] array = new String[0];
+        PreparedStatement UserId=Main.db.prepareStatement("SELECT UserId FROM Users WHERE SessionToken==1");
+        ResultSet UserID=UserId.executeQuery();
+        int Userid=UserID.getInt(1);
         PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
         ResultSet LogIdset=LogIncrement.executeQuery();
         int LogId = LogIdset.getInt(1);
         try {
-            PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==UserId");
+            PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==Userid");
             ResultSet results=Titles.executeQuery();
             for(int x=0;x<LogId;x++){
                 array[x]=results.getString(x);

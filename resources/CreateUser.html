@@ -9,35 +9,40 @@
 <body>
 <div id="left"></div>
 <div id="right"></div>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div class="content">
+    <br>
 
-<p>Password:</p>
-<input name="password" required="required" type="password" id="password" />
-<p>Confirm Password:</p>
-<input name="password_confirm" required="required" type="password" id="password_confirm" oninput="check(this)" />
-<script language='javascript' type='text/javascript'>
-    function check(input) {
-        if (input.value != document.getElementById('password').value) {
-            input.setCustomValidity('Password Must be Matching.');
-        } else {
-            // input is valid -- reset the error message
-            input.setCustomValidity('');
+    <form id="Login">
+        <p>Password:</p>
+        <input name="password" required="required" type="password" id="password" />
+        <p>Confirm Password:</p>
+        <input name="password_confirm" required="required" type="password" id="password_confirm"  />
+        <p>Admin:</p>
+        <input type="checkbox" name="Admin">
+
+
+    </form>
+    <br>
+    <br>
+    <br>
+
+    <div class="center">
+        <h4 id="valid">Passwords Must Match</h4>
+        <button onclick='check(password,password_confirm,Admin);'>Create User</button>
+    </div>
+    <script language='javascript' type='text/javascript'>
+        function check(input,input1,admin) {
+            if (input1.value != document.getElementById('password').value) {
+                input1.setCustomValidity('Password Must be Matching.');
+                document.getElementById('valid').className = 'invalid';
+            } else {
+                // input is valid -- reset the error message
+                input1.setCustomValidity('');
+                createUser(input,input1,admin)
+            }
         }
-    }
-</script>
-<br /><br />
-<input type="submit" />
-<form id="Login">
-    Password: <input type="password" name="Password">
-    Confirm Password: <input type="password" name="Password1">
-    Admin:<input type="checkbox" name="Admin">
-</form>
-<div class="center">
-    <button onclick='createUser(Password,Password1,Admin);'>Create User</button>
+    </script>
+
 </div>
 </body>
 </html>
