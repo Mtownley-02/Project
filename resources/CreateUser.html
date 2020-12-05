@@ -34,7 +34,7 @@
         function check(input,input1,admin) {
             if (input1.value != document.getElementById('password').value) {
                 input1.setCustomValidity('Password Must be Matching.');
-                document.getElementById('valid').className = 'invalid';
+                document.getElementById('valid').classList.remove('valid');
             } else {
                 // input is valid -- reset the error message
                 input1.setCustomValidity('');

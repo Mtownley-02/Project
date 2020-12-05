@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Path("Logs/")
 @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -66,22 +67,18 @@ public class Logs {
     }
     @POST
     @Path("view")
-    public String LogsView(@FormDataParam("LogId") String LogId ){
-        JSONArray response = new JSONArray();
+    public String[] LogsView(@FormDataParam("LogId") String LogId ){
+        String[] response = new;
         try{
             PreparedStatement ps = Main.db.prepareStatement("SELECT Title,Text FROM Logs WHERE LogId==LogId");
             ResultSet results = ps.executeQuery();
-            while (results.next()) {
-                JSONObject row = new JSONObject();
-                row.put("Title", results.getString(1));
-                row.put("Text", results.getString(2));
-                response.add(row);
-            }
-            System.out.println(response.toString());
-            return response.toString();
+            response[0]=results.getString(1);
+            response[1]=results.getString(2);
+            System.out.println(Arrays.toString(response));
+            return response;
         }catch (Exception exception){
             System.out.println("Log error: " + exception.getMessage());
-            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
+            return null;
         }
     }
     @POST
