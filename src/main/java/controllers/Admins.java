@@ -33,6 +33,22 @@ public class Admins {
         }
 
     }
+    @GET
+    @Path("viewLog/")
+    public String[] AdminsViewLog() throws SQLException {
+        String[] resultarray= new String[0];
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs");
+            ResultSet results=ps.executeQuery();
+            resultarray[0]=results.getString(1);
+            resultarray[1]=results.getString(2);
+            return (resultarray);
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return null;
+        }
+
+    }
 
     @POST
     @Path("delete")

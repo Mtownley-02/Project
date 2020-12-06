@@ -84,11 +84,38 @@ function adminViewUsers() {
 function formatUsersList(Array){
     let dataHTML = "";
     for (let item of Array) {
-        dataHTML += "<tr><td>" + item.UserID + "<td><td>" + item.Admin + "<td><td>" + item.SessionToken + "<tr><td>";
+        dataHTML += "<tr><td>" + item.UserId + "<td><td>" + item.Admin + "<td><td>" + item.SessionToken + "<tr><td>";
     }
     document.getElementById("UsersTable").innerHTML = dataHTML;
 }
 
+function goToLogsList() {
+    window.open("LogList/html");
+}
+
+function adminViewLogs() {
+    console.log("invoked adminViewLogs");
+    const url="Admins/view/";
+    fetch(url, {
+        method: "GET",
+    }).then(response => {
+        return response.json();                 //return response as JSON
+    }).then(response => {
+        if (response.hasOwnProperty("Error")) { //checks if response from the web server has an "Error"
+            alert(JSON.stringify(response));    // if it does, convert JSON object to string and alert (pop up window)
+        } else {
+            formatLogsList(response);          //this function will create an HTML table of the data (as per previous lesson)
+        }
+    });
+}
+
+function formatLogsList(Array){
+    let dataHTML = "";
+    for (let item of Array) {
+        dataHTML += "<tr><td>" + item.LogId + "<td><td>" + item.Title + "<td><td>" + item.Text + "<tr><td>";
+    }
+    document.getElementById("UsersTable").innerHTML = dataHTML;
+}
 
 function GetLogs() {
     console.log("invoked GetLogs")
