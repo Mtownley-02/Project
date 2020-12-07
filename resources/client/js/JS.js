@@ -95,7 +95,7 @@ function goToLogsList() {
 
 function adminViewLogs() {
     console.log("invoked adminViewLogs");
-    const url="Admins/view/";
+    const url="Admins/viewLog/";
     fetch(url, {
         method: "GET",
     }).then(response => {
@@ -114,13 +114,13 @@ function formatLogsList(Array){
     for (let item of Array) {
         dataHTML += "<tr><td>" + item.LogId + "<td><td>" + item.Title + "<td><td>" + item.Text + "<tr><td>";
     }
-    document.getElementById("UsersTable").innerHTML = dataHTML;
+    document.getElementById("LogsTable").innerHTML = dataHTML;
 }
 
 function GetLogs() {
-    console.log("invoked GetLogs")
-    const formData= new FormData(document.getElementById('LogUpdate'))
-    let url="Logs/view"
+    console.log("invoked GetLogs");
+    const formData= new FormData(document.getElementById('LogUpdate'));
+    let url="Logs/view";
     fetch(url,{
         method: "POST",
         body: formData,
@@ -134,11 +134,11 @@ function GetLogs() {
 function goToLogsView() {
     window.open("LogEdit.html");
 }
-function createUser(Password,Password1) {
+function createUser(password,password_confirm,Admin) {
     console.log("invoked createUser");
     const formData= new FormData(document.getElementById('Create'));
     let url="Users/create";
-    if(Password===Password1){
+    if(password==password_confirm){
         fetch(url, {
             method: "POST",
             body: formData,
@@ -148,7 +148,12 @@ function createUser(Password,Password1) {
             return response;
         } )
     }else {
-        console.log('Passwords do not match')
+        console.log('Passwords do not match');
+        alert('Passwords must match');
     }
+
+}
+
+function logsUpdate(){
 
 }

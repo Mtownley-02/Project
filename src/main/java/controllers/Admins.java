@@ -17,9 +17,9 @@ import java.sql.SQLException;
 
 public class Admins {
     @GET
-    @Path("view/")
+    @Path("view")
     public String[] AdminsView() throws SQLException {
-        String[] resultarray= new String[0];
+        String[] resultarray= new String[3];
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users");
             ResultSet results=ps.executeQuery();
@@ -34,9 +34,9 @@ public class Admins {
 
     }
     @GET
-    @Path("viewLog/")
+    @Path("viewLog")
     public String[] AdminsViewLog() throws SQLException {
-        String[] resultarray= new String[0];
+        String[] resultarray= new String[2];
         try {
             PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs");
             ResultSet results=ps.executeQuery();

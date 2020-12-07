@@ -12,36 +12,26 @@
 <div class="content">
     <br>
 
-    <form id="Login">
-        <p>Password:</p>
-        <input name="password" required="required" type="password" id="password" />
-        <p>Confirm Password:</p>
-        <input name="password_confirm" required="required" type="password" id="password_confirm"  />
-        <p>Admin:</p>
-        <input type="checkbox" name="Admin">
 
-
-    </form>
     <br>
     <br>
     <br>
 
     <div class="center">
+        <form id="Create">
+            <p>Password:</p>
+            <input name="password" required="required" type="password" id="password" />
+            <p>Confirm Password:</p>
+            <input name="password_confirm" required="required" type="password" id="password_confirm"  />
+            <p>Admin:</p>
+            <input type="checkbox" name="Admin">
+
+
+        </form>
         <h4 id="valid">Passwords Must Match</h4>
-        <button onclick='check(password,password_confirm,Admin);'>Create User</button>
+        <button onclick='createUser(password,password_confirm,Admin);'>Create User</button>
     </div>
-    <script language='javascript' type='text/javascript'>
-        function check(input,input1,admin) {
-            if (input1.value != document.getElementById('password').value) {
-                input1.setCustomValidity('Password Must be Matching.');
-                document.getElementById('valid').classList.remove('valid');
-            } else {
-                // input is valid -- reset the error message
-                input1.setCustomValidity('');
-                createUser(input,input1,admin)
-            }
-        }
-    </script>
+
 
 </div>
 </body>

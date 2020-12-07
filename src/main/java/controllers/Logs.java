@@ -26,13 +26,14 @@ public class Logs {
     public String[] GetTitle() throws SQLException{
         String[] array = new String[0];
         PreparedStatement UserId=Main.db.prepareStatement("SELECT UserId FROM Users WHERE SessionToken==1");
-        ResultSet UserID=UserId.executeQuery();
-        int Userid=UserID.getInt(1);
+
         PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
         ResultSet LogIdset=LogIncrement.executeQuery();
         int LogId = LogIdset.getInt(1);
         try {
-            PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==Userid");
+            ResultSet UserID=UserId.executeQuery();
+            int Userid =UserID.getInt(1);
+            PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId == Userid");
             ResultSet results=Titles.executeQuery();
             for(int x=0;x<LogId;x++){
                 array[x]=results.getString(x);
@@ -40,18 +41,21 @@ public class Logs {
             return array;
         } catch (Exception exception) {
             System.out.println("Log error: " + exception.getMessage());
-            return["{\"Error\": \"Unable to list items.  Error code xx.\"}"];
+            return null;
         }
     }
 
     @POST
     @Path("create")
-    public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") Integer UserId) throws SQLException {
+    public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text) throws SQLException {
 
 
         PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
         ResultSet LogIdset=LogIncrement.executeQuery();
         int LogId = LogIdset.getInt(1);
+        PreparedStatement Userget=Main.db.prepareStatement("SELECT UserId FROM Users WHERE SessionToken==TRUE ");
+        ResultSet UserResults=Userget.executeQuery();
+        int UserId=UserResults.getInt(1);
         try{
             PreparedStatement ps =Main.db.prepareStatement("INSERT INTO Logs(LogId, Title, Text, UserId) VALUES (?,?,?,?)");
             ps.setInt(1,LogId+1);
