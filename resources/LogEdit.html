@@ -21,16 +21,18 @@
     <br>
     <br>
     <form id="getLog">
-
-    </form>
-    <br>
-    <br>
-    <form id="LogUpdate">
         LogId:<input type="text" name="LogId">
         <br>
         <br>
         <br>
         <br>
+    </form>
+    <button onclick="GetLogs()" >Load Log</button>
+    <button onclick="logsDelete()" >Delete Log</button>
+    <br>
+    <br>
+    <form id="LogUpdate">
+
          Title  : <input type="text" name="Title">
         <br>
         <br>
@@ -38,8 +40,7 @@
         <br>
         <textarea name="Text" class="resizedbox"></textarea>
     </form>
-    <button onclick="GetLogs()" >Load Log</button>
-    <button onclick="logsDelete()" >Delete Log</button>
+
     <button onclick="logsUpdate()" >Update Log</button>
 </div>
 </body>

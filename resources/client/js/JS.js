@@ -42,7 +42,7 @@ function logsCreate() {
 
 function logsDelete() {
     console.log("invoked logsDelete");
-    const formData= new FormData(document.getElementById('LogDelete'));
+    const formData= new FormData(document.getElementById('GetLogs'));
     let url="Logs/delete";
     fetch(url, {
         method: "POST",
@@ -119,7 +119,7 @@ function formatLogsList(Array){
 
 function GetLogs() {
     console.log("invoked GetLogs");
-    const formData= new FormData(document.getElementById('LogUpdate'));
+    const formData= new FormData(document.getElementById('GetLogs'));
     let url="Logs/view";
     fetch(url,{
         method: "POST",
