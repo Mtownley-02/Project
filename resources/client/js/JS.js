@@ -90,7 +90,7 @@ function formatUsersList(Array){
 }
 
 function goToLogsList() {
-    window.open("LogList/html");
+    window.open("LogList.html");
 }
 
 function adminViewLogs() {
@@ -168,8 +168,8 @@ function accessHub(){
     let url="Users/hub/"
     fetch(url,{
 
-    }).then(response =>
+    }).then(response =>{
 
-    )
+    })
 
 }
