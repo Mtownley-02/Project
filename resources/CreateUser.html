@@ -11,25 +11,20 @@
 <div id="right"></div>
 <div class="content">
     <br>
-
-
-    <br>
     <br>
     <br>
 
     <div class="center">
         <form id="Create">
             <p>Password:</p>
-            <input name="password" required="required" type="password" id="password" />
-            <p>Confirm Password:</p>
-            <input name="password_confirm" required="required" type="password" id="password_confirm"  />
+            <input name="password" required="required" type="password" id=textbox" />
             <p>Admin:</p>
-            <input type="checkbox" name="Admin">
+            <input type="checkbox" name="Admin" id="checkbox">
 
 
         </form>
-        <h4 id="valid">Passwords Must Match</h4>
-        <button onclick='createUser(password,password_confirm,Admin);'>Create User</button>
+
+        <button onclick='createUser();'>Create User</button>
     </div>
 
 

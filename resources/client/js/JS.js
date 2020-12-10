@@ -8,14 +8,14 @@ $(window).scroll(function(){
     }
 });
 function attemptLogin(){
-    console.log("invoked attemptLogin");
+    console.log("invoked attemptlogin");
     const formData= new FormData(document.getElementById('Login'));
-    let url="Users/attemptLogin";
+    let url="Users/attemptlogin";
     fetch(url,{
         method: "POST",
         body: formData,
     }).then(response =>{
-        if(response.hasOwnProperty("Error")){
+        if(response.hasOwnProperty("error")){
             console.log(JSON.stringify(response));
         }else{
             window.open("UserS.html");
@@ -119,7 +119,7 @@ function formatLogsList(Array){
 
 function GetLogs() {
     console.log("invoked GetLogs");
-    const formData= new FormData(document.getElementById('GetLogs'));
+    const formData= new FormData(document.getElementById('getLog'));
     let url="Logs/view";
     fetch(url,{
         method: "POST",
@@ -134,26 +134,31 @@ function GetLogs() {
 function goToLogsView() {
     window.open("LogEdit.html");
 }
-function createUser(password,password_confirm,Admin) {
-    console.log("invoked createUser");
+function createUser(){
     const formData= new FormData(document.getElementById('Create'));
     let url="Users/create";
-    if(password==password_confirm){
         fetch(url, {
             method: "POST",
             body: formData,
-        }).then(response =>{
-
-            window.open("UserS.html");
-            return response;
-        } )
-    }else {
-        console.log('Passwords do not match');
-        alert('Passwords must match');
-    }
-
+        } ).then(response=>{
+            if (response[1] ===parseInt(response[1],10)) { //checks if response from the web server has an "Error"
+                window.open("UserS.html");
+                return response;     // if it does, convert JSON object to string and alert (pop up window)
+            } else {
+                alert("bad");                      //this function will create an HTML table of the data (as per previous lesson)
+            }
+        })
 }
 
-function logsUpdate(){
+function logsUpdate(LogId){
+    console.log("invoked logsUpdate");
+    const formData=new FormData(document.getElementById('LogUpdate'));
+    let url="Logs/update";
+    fetch(url, {
+        method: "POST",
+        body: LogId,formData
+    }).then(response=>{
 
+        return response;
+    } )
 }

@@ -40,10 +40,9 @@ public class Users{
     }
     @POST
     @Path("create")
-    public String UsersCreate(@FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin) throws SQLException {
+    public String UsersCreate(@FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin) {
         System.out.println("Invoked Users.UsersCreate");
-        int AdIdInt;
-
+        JSONArray response = new JSONArray();
         try{
             PreparedStatement UserIncrement= Main.db.prepareStatement("SELECT MAX(UserId) FROM Users");
             ResultSet UserIdset=UserIncrement.executeQuery();
@@ -59,8 +58,10 @@ public class Users{
             ps.setBoolean(3,Admin);
             ps.setBoolean(4,false);
             ps.executeUpdate();
-            String UserID=Integer.toString(UserId);
-            return (UserID);
+            JSONObject row = new JSONObject();
+            row.put(1,Integer.toString(UserId));
+            response.add(row);
+            return (response.toString());
         } catch (Exception exception){
             System.out.println("Error: " + exception.getMessage());
             return "{\"Error\": \"Unable to create new item, please see server console for more info.\"}";
@@ -97,23 +98,21 @@ public class Users{
         PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId==UserId ");
         ResultSet passset=ps.executeQuery();
         String PassString=passset.getString(1);
+        JSONObject row1 = new JSONObject();
         if (Password.equals(PassString)){
             PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=true ");
             PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
             ResultSet results = admin.executeQuery();
             cookieupdate.executeUpdate();
-            JSONObject row1 = new JSONObject();
-            row1.put("Admin", results.getString(1));
-            String adstring=results.getString(1);
 
-            if(adstring != null){
-                return ("admin");
-            }
-            return ("Success; Cookie created");
+            row1.put("Admin", results.getString(1));
+            return (row1.toString());
 
         } else{
             System.out.println("Database error: Incorrect Password/Id");
-            return PassString;
+            row1.put("error","error");
+
+            return row1.toString();
         }
 
     }
