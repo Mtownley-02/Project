@@ -18,7 +18,7 @@ function attemptLogin(){
         if(response.hasOwnProperty("error")){
             console.log(JSON.stringify(response));
         }else{
-            window.open("UserS.html");
+            accessHub();
         }
     })
 }
@@ -142,7 +142,7 @@ function createUser(){
             body: formData,
         } ).then(response=>{
             if (response[1] ===parseInt(response[1],10)) { //checks if response from the web server has an "Error"
-                window.open("UserS.html");
+                accessHub();
                 return response;     // if it does, convert JSON object to string and alert (pop up window)
             } else {
                 alert("bad");                      //this function will create an HTML table of the data (as per previous lesson)
@@ -161,4 +161,15 @@ function logsUpdate(LogId){
 
         return response;
     } )
+}
+
+function accessHub(){
+    console.log("invoked accessHub")
+    let url="Users/hub/"
+    fetch(url,{
+
+    }).then(response =>
+
+    )
+
 }
