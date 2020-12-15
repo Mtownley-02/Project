@@ -140,10 +140,10 @@ function createUser(){
         fetch(url, {
             method: "POST",
             body: formData,
-        } ).then(response=>{
-            if (response[1] ===parseInt(response[1],10)) { //checks if response from the web server has an "Error"
+        } ).then(responsearray=>{
+            if (responsearray[1] ===parseInt(responsearray[1],10)) { //checks if response from the web server has an "Error"
                 accessHub();
-                return response;     // if it does, convert JSON object to string and alert (pop up window)
+                return responsearray;     // if it does, convert JSON object to string and alert (pop up window)
             } else {
                 alert("bad");                      //this function will create an HTML table of the data (as per previous lesson)
             }
