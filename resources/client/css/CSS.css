@@ -135,3 +135,11 @@ h4{
     width:5px;
     height:auto;
 }
+
+table, thead, td ,tr{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 15px;
+    border-spacing: 5px;
+
+}

@@ -70,17 +70,17 @@ public class Users{
     }
     @GET
     @Path("hub/{UserId}")
-    public String UsersHub(@PathParam("UserId") Integer UserId) throws SQLException {
+    public String UsersHub(@PathParam("UserId") Integer Userid) throws SQLException {
         System.out.println("Invoked Users.UsersHub");
         try {
-            PreparedStatement SessionToken = Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==UserId");
+            PreparedStatement SessionToken = Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==Userid");
             ResultSet result = SessionToken.executeQuery();
             boolean BoolToken;
             BoolToken = result.getBoolean(1);
             System.out.println(BoolToken);
             if (BoolToken) {
 
-                return ("Status: Ok");
+                return (BoolToken.toString());
             } else {
                 System.out.println("Database error: Incorrect cookie");
                 return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";

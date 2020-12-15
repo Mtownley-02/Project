@@ -167,9 +167,10 @@ function accessHub(){
     console.log("invoked accessHub")
     let url="Users/hub/"
     fetch(url,{
-
     }).then(response =>{
-
+        if(response){
+            window.open("UserA.html");
+        }
     })
 
 }
