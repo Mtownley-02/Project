@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Quiz</title>
+    <script src="js/JS.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/CSS.css">
+</head>
+<body>
+<button onclick='getUsersList();'>Run getUsersList</button>
+<table id="UsersTable"></table>
+<br>
+
+<form id="userDetails">
+    User id: <input type="text" id="UserID">
+</form>
+<button onclick='getUser();'>Run getUser</button>
+<div id="DisplayOneUser"></div>
+<br>
+
+<form id="Login">
+    Username: <input type="text" name="UserName">
+    Password: <input type="text" name="PassWord">
+</form>
+<button onclick='attemptlogin();'>Add User</button>
+</body>
+</html>

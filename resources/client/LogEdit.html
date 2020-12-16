@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"
+          content="width=device-width, initial-scale=1">
+    <title>Logs</title>
+    <link rel="stylesheet" type="text/css" href="css/CSS.css"/>
+    <script type="text/javascript" src="js/JS.js"></script>
+</head>
+<body>
+<div id="left"></div>
+<div id="right"></div>
+
+<navbar>
+    <a class="active"  href="UserS.html">Home</a>
+    <a  href="LogCreate.html">Create Log</a>
+</navbar>
+<div class="content">
+    <div class="center">
+    <br>
+    <br>
+    <br>
+    <br>
+    <form id="getLog">
+        LogId:
+        <br>
+        <input type="text" name="LogId" class="button">
+        <br>
+        <br>
+        <br>
+        <br>
+    </form>
+    <button onclick="GetLogs()" class="button">Load Log</button>
+    <br>
+    <br>
+    <button onclick="logsDelete()" class="button">Delete Log</button>
+    <br>
+    <br>
+    <form id="LogUpdate">
+
+         Title  :
+        <br>
+        <input type="text" name="Title" class="button">
+        <br>
+        <br>
+        Text:
+        <br>
+        <textarea name="Text" class="resizedbox"></textarea>
+    </form>
+    <br>
+    <br>
+    <br>
+    <button onclick="logsUpdate()" class="button">Update Log</button>
+</div>
+</div>
+</body>
+</html>

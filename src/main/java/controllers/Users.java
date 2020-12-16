@@ -10,10 +10,10 @@ import javax.ws.rs.core.MediaType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 @Path("Users/")
-@Consumes(MediaType.MULTIPART_FORM_DATA)
-@Produces(MediaType.APPLICATION_JSON)
+
 
 public class Users{
 
@@ -70,17 +70,17 @@ public class Users{
     }
     @GET
     @Path("hub/{UserId}")
-    public String UsersHub(@PathParam("UserId") Integer Userid) throws SQLException {
+    public String UsersHub(@PathParam("UserId") Integer UserId) throws SQLException {
         System.out.println("Invoked Users.UsersHub");
         try {
-            PreparedStatement SessionToken = Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==Userid");
+            PreparedStatement SessionToken = Main.db.prepareStatement("SELECT SessionToken FROM Users WHERE UserId==UserId");
             ResultSet result = SessionToken.executeQuery();
             boolean BoolToken;
             BoolToken = result.getBoolean(1);
             System.out.println(BoolToken);
             if (BoolToken) {
 
-                return (BoolToken.toString());
+                return ("Status: Ok");
             } else {
                 System.out.println("Database error: Incorrect cookie");
                 return "{\"Error\": \"Unable to access hub, please see server console for more info.\"}";
@@ -93,27 +93,42 @@ public class Users{
     }
     @POST
     @Path("attemptlogin")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
     public String UsersAttemptLogin(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password) throws SQLException {
-        System.out.println("Invoked Users.UsersAttemptLogin");
-        PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId==UserId ");
-        ResultSet passset=ps.executeQuery();
-        String PassString=passset.getString(1);
-        JSONObject row1 = new JSONObject();
-        if (Password.equals(PassString)){
-            PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=true ");
-            PreparedStatement admin= Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId==UserId");
-            ResultSet results = admin.executeQuery();
-            cookieupdate.executeUpdate();
+        try {
+            System.out.println("Invoked Users.UsersAttemptLogin");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId=? ");
+            ps.setInt(1, UserId);
+            ResultSet passset = ps.executeQuery();
+            if (passset.next()) {
+                String PassString = passset.getString(1);
+                JSONObject row1 = new JSONObject();
+                if (Password.equals(PassString)) {
+                    String SessionToken = UUID.randomUUID().toString();
+                    //PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=true ");
+                    PreparedStatement cookieUpdate = Main.db.prepareStatement("UPDATE Users SET SessionToken=? ");
+                    cookieUpdate.setString(1, SessionToken);
+                    PreparedStatement admin = Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId=?");
+                    admin.setInt(1, UserId);
+                    ResultSet results = admin.executeQuery();
+                    cookieUpdate.executeUpdate();
+                    row1.put("Admin", results.getString(1));
+                    row1.put("UserId", UserId);
+                    return row1.toString();
+                    //} else {
+                }else {
+                    return "{\"Error\": \"Database error: Incorrect Password/Id\"}";
+                    //System.out.println("Database error: Incorrect Password/Id");
+                    //row1.put("error", "error");
 
-            row1.put("Admin", results.getString(1));
-            return (row1.toString());
-
-        } else{
-            System.out.println("Database error: Incorrect Password/Id");
-            row1.put("error","error");
-
-            return row1.toString();
+                }
+            }else{
+                return "{\"Error\": \"Username and password are incorrect.\"}";
+            }
+            //return (row1.toString());
+        }catch(Exception e){
+            return e.getMessage();
         }
-
     }
 }
