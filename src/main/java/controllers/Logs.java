@@ -42,14 +42,11 @@ public class Logs {
 
     @POST
     @Path("create")
-    public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text) throws SQLException {
+    public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") int UserId) throws SQLException {
         JSONArray response = new JSONArray();
         PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
         ResultSet LogIdset=LogIncrement.executeQuery();
         int LogId = LogIdset.getInt(1);
-        PreparedStatement Userget=Main.db.prepareStatement("SELECT UserId FROM Users WHERE SessionToken==TRUE ");
-        ResultSet UserResults=Userget.executeQuery();
-        int UserId=UserResults.getInt(1);
         try{
             PreparedStatement ps =Main.db.prepareStatement("INSERT INTO Logs(LogId, Title, Text, UserId) VALUES (?,?,?,?)");
             ps.setInt(1,LogId+1);

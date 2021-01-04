@@ -22,21 +22,28 @@ function goTocreateUser() {
 
 
 function logsCreate() {
+    debugger;
     console.log("invoked logsCreate");
-    const formData= new FormData(document.getElementById('LogCreate'));
-    let url="Logs/create";
-        fetch(url, {
-            method: "POST",
-            body: formData,
-        }).then(response =>{
-            return response;
-        } )
+    const formData = new FormData(document.getElementById('LogCreate'));
+    let url = "/Logs/create";
+    fetch(url, {
+        method: "POST",
+        body: formData,
+    }).then(response => {
+        return response;
+    }).then(response => {
+        if (response.hasOwnProperty("Error")) {
+            alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
+        } else {
+            alert("Log was added to database.");
+        }
+    });
 }
 
 function logsDelete() {
     console.log("invoked logsDelete");
     const formData= new FormData(document.getElementById('getLog'));
-    let url="Logs/delete";
+    let url="/Logs/delete";
     fetch(url, {
         method: "POST",
         body: formData,
@@ -48,7 +55,7 @@ function logsDelete() {
 function adminDelete() {
     console.log("invoked adminDelete");
     const formData= new FormData(document.getElementById('AdminDelete'));
-    let url="Admins/delete";
+    let url="/Admins/delete";
     fetch(url, {
         method: "POST",
         body: formData,
@@ -60,7 +67,7 @@ function adminDelete() {
 
 function adminViewUsers() {
     console.log("invoked adminViewUsers");
-    const url="Admins/view/";
+    const url="/Admins/view/";
     fetch(url, {
         method: "GET",
     }).then(response => {
@@ -88,7 +95,7 @@ function goToLogsList() {
 
 function adminViewLogs() {
     console.log("invoked adminViewLogs");
-    const url="Admins/viewLog/";
+    const url="/Admins/viewLog/";
     fetch(url, {
         method: "GET",
     }).then(response => {
@@ -113,7 +120,7 @@ function formatLogsList(Array){
 function GetLogs() {
     console.log("invoked GetLogs");
     const formData= new FormData(document.getElementById('getLog'));
-    let url="Logs/view";
+    let url="/Logs/view";
     fetch(url,{
         method: "POST",
         body: formData,
@@ -129,7 +136,7 @@ function goToLogsView() {
 }
 function createUser(){
     const formData= new FormData(document.getElementById('Create'));
-    let url="Users/create";
+    let url="/Users/create";
         fetch(url, {
             method: "POST",
             body: formData,
@@ -146,7 +153,7 @@ function createUser(){
 function logsUpdate(LogId){
     console.log("invoked logsUpdate");
     const formData=new FormData(document.getElementById('LogUpdate'));
-    let url="Logs/update";
+    let url="/Logs/update";
     fetch(url, {
         method: "POST",
         body: LogId,formData
