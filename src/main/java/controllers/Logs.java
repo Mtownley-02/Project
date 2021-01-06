@@ -28,8 +28,8 @@ public class Logs {
         try {
             JSONObject row1= new JSONObject();
             ResultSet UserID=UserId.executeQuery();
-            int Id =UserID.getInt(1);
-            PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==Id");
+            int id =UserID.getInt(1);
+            PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==id");
             ResultSet results=Titles.executeQuery();
             row1.put("Title",results.getString(1));
             response.add(row1);
@@ -62,7 +62,7 @@ public class Logs {
     }
     @POST
     @Path("view")
-    public Object[] LogsView(@FormDataParam("LogId") String LogId ){
+    public JSONArray LogsView(@FormDataParam("LogId") String LogId ){
         JSONArray response = new JSONArray();
         try{
             JSONObject row1= new JSONObject();
@@ -72,7 +72,7 @@ public class Logs {
             row1.put("Text", results.getString( 2));
             response.add(row1);
             System.out.println(response.toString());
-            return response.toArray();
+            return response;
         }catch (Exception exception){
             System.out.println("Log error: " + exception.getMessage());
             return null;
