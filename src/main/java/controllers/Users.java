@@ -42,7 +42,7 @@ public class Users{
     @Path("create")
     public String UsersCreate(@FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin) {
         System.out.println("Invoked Users.UsersCreate");
-        JSONArray response = new JSONArray();
+        String response = new String();
         try{
             PreparedStatement UserIncrement= Main.db.prepareStatement("SELECT MAX(UserId) FROM Users");
             ResultSet UserIdset=UserIncrement.executeQuery();
@@ -50,21 +50,22 @@ public class Users{
             if(Admin==true){
                 Admin=true;
             }else{
-                Admin=null;
+                Admin=false;
             }
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin,SessionToken) VALUES (?,?,?,?)");
             ps.setInt(1,UserId);
             ps.setString(2,Password);
             ps.setBoolean(3,Admin);
-            ps.setBoolean(4,false);
+            ps.setBoolean(4, (false));
             ps.executeUpdate();
             JSONObject row = new JSONObject();
-            row.put(1,Integer.toString(UserId));
-            response.add(row);
+            row.put("USerID:",Integer.toString(UserId));
+            response=(row.toString());
             return (response.toString());
         } catch (Exception exception){
             System.out.println("Error: " + exception.getMessage());
-            return "{\"Error\": \"Unable to create new item, please see server console for more info.\"}";
+            response= "{\"Error\": \"Unable to create new item, please see server console for more info.\"}";
+            return response;
         }
 
     }

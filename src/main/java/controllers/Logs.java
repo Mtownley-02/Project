@@ -29,7 +29,8 @@ public class Logs {
             JSONObject row1= new JSONObject();
             ResultSet UserID=UserId.executeQuery();
             int id =UserID.getInt(1);
-            PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==id");
+            PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==?");
+            Titles.setInt(1,id);
             ResultSet results=Titles.executeQuery();
             row1.put("Title",results.getString(1));
             response.add(row1);
@@ -43,7 +44,7 @@ public class Logs {
     @POST
     @Path("create")
     public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") int UserId) throws SQLException {
-        JSONArray response = new JSONArray();
+        String response;
         PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
         ResultSet LogIdset=LogIncrement.executeQuery();
         int LogId = LogIdset.getInt(1);
@@ -54,10 +55,12 @@ public class Logs {
             ps.setString(3,Text);
             ps.setInt(4,UserId);
             ps.executeUpdate();
-            return ("Success");
+            response=("Success");
+            return response;
         }catch (Exception exception){
             System.out.println("Log error: " + exception.getMessage());
-            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
+            response="{\"Error\": \"Unable to save log.\"}";
+            return response;
         }
     }
     @POST
@@ -78,17 +81,15 @@ public class Logs {
             return null;
         }
     }
-    @POST
-    @Path("delete")
-    public String LogsDelete(@FormDataParam("LogId") String LogId) throws SQLException {
-        JSONArray response = new JSONArray();
+    @DELETE
+    @Path("delete/{LogId}")
+    public String LogsDelete(@PathParam("LogId") Integer LogId){
+        System.out.println("invoked logs/delete");
         try {
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId==LogId");
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Logs WHERE LogId==?");
+            ps.setInt(1,LogId);
             ps.executeUpdate();
-            JSONObject row1=new JSONObject();
-            row1.put("Type","success");
-            response.add(row1);
-            return (response.toString());
+            return ("success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"Error\": \"Unable to delete items.  Error code xx.\"}";

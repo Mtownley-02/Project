@@ -30,9 +30,9 @@ function logsCreate() {
         method: "POST",
         body: formData,
     }).then(response => {
-        return response;
+        return response.json();
     }).then(response => {
-        if (response.hasOwnProperty("Error")) {
+        if (response.hasOwnProperty("Error") ||(response.hasOwnProperty("error"))) {
             alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
         } else {
             alert("Log was added to database.");
@@ -41,20 +41,18 @@ function logsCreate() {
 }
 
 function logsDelete() {
-    debugger;
     console.log("invoked logsDelete");
-    const formData= new FormData(document.getElementById('getLog'));
-    let url="/Logs/delete";
-    fetch(url, {
-        method: "POST",
-        body: formData,
+    const LogId= document.getElementById("filler").value;
+    const url="/Logs/delete/";
+    fetch(url + LogId,{
+        method: "DELETE",
     }).then(response =>{
         return response;
     } ).then(response => {
         if (response.hasOwnProperty("Error")) {
             alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
         } else {
-            alert("Log was removed from database.");
+            alert(JSON.stringify(response) +"Log was removed from database.");
         }
     });
 }
@@ -64,16 +62,16 @@ function adminDelete() {
     console.log("invoked adminDelete");
     const formData= new FormData(document.getElementById('AdminDelete'));
     let url="/Admins/delete";
-    fetch(url, {
-        method: "POST",
-        body: formData,
-    }).then(response =>{
-        return response;
-    } ).then(response => {
-        if (response.hasOwnProperty("Error")) {
-            alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
+
+    fetch(url + UserID, {                // UserID as a path parameter
+        method: "DELETE",
+    }).then(response => {
+        return response.json();                         //return response to JSON
+    }).then(response => {                                   //something here
+        if (response.hasOwnProperty("Error")) {         //checks if response from server has an "Error"
+            alert(JSON.stringify(response));            // if it does, convert JSON object to string and alert
         } else {
-            alert("User was removed from database.");
+            alert(JSON.stringify(response), "has been deleted");
         }
     });
 }
@@ -160,17 +158,18 @@ function goToLogsView() {
 }
 function createUser(){
     debugger;
-    const formData= new FormData(document.getElementById('Create'));
+    const formData= new FormData(document.getElementById('CreateU'));
     let url="/Users/create";
         fetch(url, {
             method: "POST",
             body: formData,
-        } ).then(response=>{
-            if (response[1] ===parseInt(response[1],10)) { //checks if response from the web server has an "Error"
-                window.open("UserS.html");
-                return response;     // if it does, convert JSON object to string and alert (pop up window)
+        } ).then(response=> {
+            return response.json();
+        } ).then(response => {
+            if (response.hasOwnProperty("Error")) {
+                alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
             } else {
-                alert("bad");                      //this function will create an HTML table of the data (as per previous lesson)
+                alert("User created");
             }
         })
 }

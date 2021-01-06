@@ -48,18 +48,18 @@ public class Admins {
 
     }
 
-    @POST
-    @Path("delete")
-    public String AdminsDelete(@FormDataParam("UserId") String UserId) throws SQLException {
+    @DELETE
+    @Path("delete/{UserId}")
+    public String AdminsDelete(@PathParam("UserId") Integer Userid){
+        System.out.println("invoked admins/delete");
         try {
-            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserId==UserId");
+            PreparedStatement ps = Main.db.prepareStatement("DELETE FROM Users WHERE UserId==?");
+            ps.setInt(1,Userid);
             ps.executeUpdate();
             return ("Success");
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
             return "{\"Error\": \"Unable to delete items.  Error code xx.\"}";
-        }
-
-    }
+        }}
 
 }
