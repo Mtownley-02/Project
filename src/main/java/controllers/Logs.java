@@ -21,13 +21,13 @@ public class Logs {
     public JSONArray GetTitle() throws SQLException{
         JSONArray response = new JSONArray();
         PreparedStatement UserId=Main.db.prepareStatement("SELECT UserId FROM Users WHERE SessionToken==1");
-
+        ResultSet UserID=UserId.executeQuery();
         PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
         ResultSet LogIdset=LogIncrement.executeQuery();
         int LogId = LogIdset.getInt(1);
         try {
             String row1= new String();
-            ResultSet UserID=UserId.executeQuery();
+           // ResultSet UserID=UserId.executeQuery();
             int id =UserID.getInt(1);
             PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==?");
             Titles.setInt(1,id);
@@ -43,7 +43,33 @@ public class Logs {
             return response;
         }
     }
-
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String LogList() {
+        System.out.println("Invoked Logs.LogList()");
+        JSONArray Log = new JSONArray();
+        try {
+            PreparedStatement UserId=Main.db.prepareStatement("SELECT UserId FROM Users WHERE SessionToken==1");
+            ResultSet UserID=UserId.executeQuery();
+            int Userid =UserID.getInt(1);
+            PreparedStatement ps = Main.db.prepareStatement("SELECT Logs.LogID, Logs.Title, Logs.Text FROM Logs WHERE UserId=?");
+            ps.setInt(1,Userid);
+            ResultSet results = ps.executeQuery();
+            while (results.next()) {
+                JSONObject row = new JSONObject();
+                row.put("LogID", results.getInt(1));
+                row.put("LogName", results.getString(2));
+                Log.add(row);
+            }
+            JSONObject response = new JSONObject();
+            response.put("Logs", Log);
+            return response.toString();
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
+        }
+    }
     @POST
     @Path("create")
     public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") int UserId) throws SQLException {

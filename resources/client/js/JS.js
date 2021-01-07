@@ -113,12 +113,39 @@ function formatUsersList(Array){
     }
     $('#UsersTable')[0].innerHTML = r.join('');
 }
+function adminViewLogs(){
+    console.log("Invoked listLogs() ");
+    let url = "/Logs/list";
 
+    fetch(url, {
+        method: 'GET',
+    }).then(response => {
+        return response.json();                 //now return that promise to JSON
+    }).then(response => {
+        if (response.hasOwnProperty("Error")) {
+            alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
+        } else {
+            let LogsTable = `<div>`;
+            LogsTable += `<table><th>Log ID</th><th>Title</th><th>Text</th><th>UserId</th>`;
+            for(let r of response.Logs){
+                LogsTable += `<tr class="Log_${r.LogID}">`
+
+                    + `<td>${r.LogId}</td>`
+                    + `<td>${r.Title}</td>`
+                    + `<td>${r.Text}</td>`
+                    + `<td><button onclick="logsDelete(${r.LogID})">Delete Log</button></td>`
+                    + `</tr>`;
+            }
+            LogsTable += `</div>`;
+            document.getElementById('Logs').innerHTML = LogsTable;
+        }
+    });
+}
 function goToLogsList() {
     window.open("LogList.html");
 }
 
-function adminViewLogs() {
+function adViewLogs() {
     debugger;
     console.log("invoked adminViewLogs");
     const url="/Admins/viewLog/";
@@ -132,7 +159,7 @@ function adminViewLogs() {
         } else {
             formatLogsList(response);          //this function will create an HTML table of the data (as per previous lesson)
         }
-    });
+  });
 }
 
 function formatLogsList(Array){
