@@ -28,7 +28,6 @@ function goTocreateUser() {
 
 
 function logsCreate() {
-    debugger;
     console.log("invoked logsCreate");
     const formData = new FormData(document.getElementById('LogCreate'));
     let url = "/Logs/create/";
@@ -52,24 +51,23 @@ function logsDelete(LogId) {
     fetch(url + LogId,{
         method: "DELETE",
     }).then(response =>{
-        return response.json();
+        return response;
     } ).then(response => {
         if (response.hasOwnProperty("Error")) {
             alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
         } else {
-            alert(JSON.stringify(response) +"Log was removed from database.");
+            alert("Log was removed from database.");
         }
     });
 }
 
 function adminDelete(UserID) {
-    debugger;
     console.log("invoked adminDelete");
     let url="/Admins/delete/";
     fetch(url + UserID, {                // UserID as a path parameter
         method: "DELETE",
     }).then(response => {
-        return response.json();                         //return response to JSON
+        return response;                         //return response to JSON
     }).then(response => {                                   //something here
         if (response.hasOwnProperty("Error")) {         //checks if response from server has an "Error"
             alert(JSON.stringify(response));            // if it does, convert JSON object to string and alert
@@ -82,7 +80,6 @@ function adminDelete(UserID) {
 function adminViewUsers(){
     console.log("Invoked listUsers() ");
     let url = "/Admins/list/";
-    debugger;
     fetch(url, {
         method: 'GET',
     }).then(response => {
@@ -113,7 +110,6 @@ function adminViewUsers(){
 function adminViewLogs(){
     console.log("Invoked listLogs() ");
     let url = "/Logs/list/";
-    debugger;
     fetch(url, {
         method: 'GET',
     }).then(response => {
