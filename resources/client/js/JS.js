@@ -35,7 +35,7 @@ function logsCreate() {
         method: "POST",
         body: formData,
     }).then(response => {
-        return response.json();
+        return response;
     }).then(response => {
         if (response.hasOwnProperty("Error") ||(response.hasOwnProperty("error"))) {
             alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
@@ -101,11 +101,17 @@ function adminViewUsers() {
 
 function formatUsersList(Array){
     debugger;
-    let dataHTML = "";
-    for (let item of Array) {
-        dataHTML += "<tr><td>" + item.UserId + "<td><td>" + item.Admin + "<td><td>" + item.SessionToken + "<tr><td>";
+    let r = new Array(), j = -1;
+    for (let key=0, size=Array.length; key<size; key++){
+        r[++j] ='<tr><td>';
+        r[++j] = Array[key][0];
+        r[++j] = '</td><td class="row1">';
+        r[++j] = Array[key][1];
+        r[++j] = '</td><td class="row2">';
+        r[++j] = Array[key][2];
+        r[++j] = '</td></tr>';
     }
-    document.getElementById("UsersTable").innerHTML = dataHTML;
+    $('#UsersTable')[0].innerHTML = r.join('');
 }
 
 function goToLogsList() {
@@ -163,7 +169,7 @@ function goToLogsView() {
 }
 function createUser(){
     debugger;
-    const formData= new FormData(document.getElementById('CreateU'));
+    const formData= new FormData(document.getElementById("CreateU"));
     let url="/Users/create";
         fetch(url, {
             method: "POST",

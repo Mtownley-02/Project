@@ -40,26 +40,26 @@ public class Users{
     }
     @POST
     @Path("create")
-    public String UsersCreate(@FormDataParam("Password") String Password, @FormDataParam("Admin") Boolean Admin) {
+    public String UsersCreate(@FormDataParam("Password") String Password) {//,@FormDataParam("Admin") Boolean Admin) {
         System.out.println("Invoked Users.UsersCreate");
         String response = new String();
         try{
             PreparedStatement UserIncrement= Main.db.prepareStatement("SELECT MAX(UserId) FROM Users");
             ResultSet UserIdset=UserIncrement.executeQuery();
             int UserId = UserIdset.getInt(1)+1;
-            if(Admin==true){
-                Admin=true;
-            }else{
-                Admin=false;
-            }
+           // if(Admin==true){
+           //     Admin=true;
+           // }else{
+           //     Admin=false;
+           // }
             PreparedStatement ps = Main.db.prepareStatement("INSERT INTO Users (UserId, Password, Admin,SessionToken) VALUES (?,?,?,?)");
             ps.setInt(1,UserId);
             ps.setString(2,Password);
-            ps.setBoolean(3,Admin);
+            ps.setBoolean(3,false);
             ps.setBoolean(4, (false));
             ps.executeUpdate();
             JSONObject row = new JSONObject();
-            row.put("USerID:",Integer.toString(UserId));
+            row.put("UserID:",Integer.toString(UserId));
             response=(row.toString());
             return (response.toString());
         } catch (Exception exception){
