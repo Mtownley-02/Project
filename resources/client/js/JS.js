@@ -1,4 +1,5 @@
 function attemptLogin(){
+    debugger;
     console.log("invoked attemptlogin");
     const formData= new FormData(document.getElementById('Login'));
     let url="/Users/attemptlogin";
@@ -11,7 +12,11 @@ function attemptLogin(){
             console.log(JSON.stringify(response));
         }else{
             console.log("Success");
-            window.open("UserS.html");
+            if(response.hasOwnProperty("True")||response.hasOwnProperty("true")||response.hasOwnProperty("1")){
+                window.open("UserA.html")
+            }else {
+                window.open("UserS.html");
+            }
         }
     })
 }

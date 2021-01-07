@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class Logs {
     @POST
     @Path("GetTitle")
-    public String GetTitle() throws SQLException{
+    public JSONArray GetTitle() throws SQLException{
         JSONArray response = new JSONArray();
         PreparedStatement UserId=Main.db.prepareStatement("SELECT UserId FROM Users WHERE SessionToken==1");
 
@@ -26,18 +26,21 @@ public class Logs {
         ResultSet LogIdset=LogIncrement.executeQuery();
         int LogId = LogIdset.getInt(1);
         try {
-            JSONObject row1= new JSONObject();
+            String row1= new String();
             ResultSet UserID=UserId.executeQuery();
             int id =UserID.getInt(1);
             PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==?");
             Titles.setInt(1,id);
             ResultSet results=Titles.executeQuery();
-            row1.put("Title",results.getString(1));
-            response.add(row1);
-            return response.toString();
+            for(int i=0;i<results.getRow();i++) {
+                row1= results.getString(1);
+                response.set(i, (row1));
+            }
+            return response;
         } catch (Exception exception) {
             System.out.println("Log error: " + exception.getMessage());
-            return null;
+            response.set(0, exception.getMessage());
+            return response;
         }
     }
 
@@ -77,8 +80,8 @@ public class Logs {
             System.out.println(response.toString());
             return response;
         }catch (Exception exception){
-            System.out.println("Log error: " + exception.getMessage());
-            return null;
+            response.set(0,"Log error: " + exception.getMessage());
+            return response;
         }
     }
     @DELETE

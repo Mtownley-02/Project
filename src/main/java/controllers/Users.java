@@ -96,7 +96,8 @@ public class Users{
     @Path("attemptlogin")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public String UsersAttemptLogin(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password) throws SQLException {
+    public String[] UsersAttemptLogin(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password) throws SQLException {
+       String[] response = new String[0];
         try {
             System.out.println("Invoked Users.UsersAttemptLogin");
             PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId=? ");
@@ -106,30 +107,33 @@ public class Users{
                 String PassString = passset.getString(1);
                 JSONObject row1 = new JSONObject();
                 if (Password.equals(PassString)) {
-                    String SessionToken = UUID.randomUUID().toString();
+                    int SessionToken = 1;
                     //PreparedStatement cookieupdate= Main.db.prepareStatement("UPDATE Users SET SessionToken=true ");
                     PreparedStatement cookieUpdate = Main.db.prepareStatement("UPDATE Users SET SessionToken=? ");
-                    cookieUpdate.setString(1, SessionToken);
+                    cookieUpdate.setString(1, String.valueOf(SessionToken));
                     PreparedStatement admin = Main.db.prepareStatement("SELECT Admin FROM Users WHERE UserId=?");
                     admin.setInt(1, UserId);
                     ResultSet results = admin.executeQuery();
                     cookieUpdate.executeUpdate();
-                    row1.put("Admin", results.getString(1));
-                    row1.put("UserId", UserId);
-                    return row1.toString();
+                    response[0]=(results.getString(1));
+                    response[1]= String.valueOf((UserId));
+                    return response;
                     //} else {
                 }else {
-                    return "{\"Error\": \"Database error: Incorrect Password/Id\"}";
+                     response[0]= "{\"Error\": \"Database error: Incorrect Password/Id\"}";
+                    return response;
                     //System.out.println("Database error: Incorrect Password/Id");
                     //row1.put("error", "error");
 
                 }
             }else{
-                return "{\"Error\": \"Username and password are incorrect.\"}";
+                response[0]=  "{\"Error\": \"Username and password are incorrect.\"}";
+                return response;
             }
             //return (row1.toString());
         }catch(Exception e){
-            return e.getMessage();
+            response[0]=  e.toString();
+            return response;
         }
     }
 }
