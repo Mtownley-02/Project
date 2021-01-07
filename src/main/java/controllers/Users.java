@@ -61,7 +61,7 @@ public class Users{
             JSONObject row = new JSONObject();
             row.put("UserID:",Integer.toString(UserId));
             response=(row.toString());
-            return (response.toString());
+            return (Integer.toString(UserId));
         } catch (Exception exception){
             System.out.println("Error: " + exception.getMessage());
             response= "{\"Error\": \"Unable to create new item, please see server console for more info.\"}";

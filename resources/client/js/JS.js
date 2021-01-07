@@ -180,7 +180,7 @@ function createUser(){
             if (response.hasOwnProperty("Error")) {
                 alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
             } else {
-                alert("User created");
+                alert("User created, UserID:"+response.toString());
             }
         })
 }
