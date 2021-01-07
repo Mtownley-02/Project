@@ -1,6 +1,8 @@
 package controllers;
 
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import server.Main;
 
 import javax.ws.rs.*;
@@ -15,38 +17,31 @@ import java.sql.SQLException;
 
 public class Admins {
     @GET
-    @Path("view")
-    public String[] AdminsView() throws SQLException {
-        String[] resultarray= new String[3];
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String UserList() {
+        System.out.println("Invoked Users.UserList()");
+        JSONArray User = new JSONArray();
         try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Users");
-            ResultSet results=ps.executeQuery();
-            resultarray[0]=results.getString(1);
-            resultarray[1]=results.getString(3);
-            resultarray[2]=results.getString(4);
-            return (resultarray);
+            PreparedStatement ps = Main.db.prepareStatement("SELECT Users.UserID, Users.Password, Users.Admin , Users.SessionToken FROM Users");
+            ResultSet results = ps.executeQuery();
+            while (results.next()) {
+                JSONObject row = new JSONObject();
+                row.put("UserId", results.getInt(1));
+                row.put("Password", results.getString(2));
+                row.put("Admin",results.getString(3));
+                row.put("SessionToken",results.getString(4));
+                User.add(row);
+            }
+            JSONObject response = new JSONObject();
+            response.put("Users", User);
+            return response.toString();
         } catch (Exception exception) {
             System.out.println("Database error: " + exception.getMessage());
-            return null;
+            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
         }
-
     }
-    @GET
-    @Path("viewLog")
-    public String[] AdminsViewLog() throws SQLException {
-        String[] resultarray= new String[2];
-        try {
-            PreparedStatement ps = Main.db.prepareStatement("SELECT * FROM Logs");
-            ResultSet results=ps.executeQuery();
-            resultarray[0]=results.getString(1);
-            resultarray[1]=results.getString(2);
-            return (resultarray);
-        } catch (Exception exception) {
-            System.out.println("Database error: " + exception.getMessage());
-            return null;
-        }
 
-    }
 
     @DELETE
     @Path("delete/{UserId}")
