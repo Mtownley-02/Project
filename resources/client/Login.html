@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="css/CSS.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.js"></script>
     <script type="text/javascript" src="/client/js/JS.js"></script>
 </head>
 <body>
@@ -16,15 +15,14 @@
 <br>
 <br>
 <br>
-<div>
-    <form id="Login" style="justify-content: center">
-        UserId: <input type="text" name="UserId" class="button">
-        Password: <input type="password" name="Password" class="button">
-    </form>
+<form id="Login">
+    UserId: <input type="text" name="UserId" class="button">
+    Password: <input type="password" name="Password" class="button">
+</form>
+
+
     <button onclick='attemptLogin();' class="button">Log In</button>
     <button  onclick='goTocreateUser();' class="button">Create User</button>
-</div>
-
 
 
 </body>

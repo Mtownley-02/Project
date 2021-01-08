@@ -97,7 +97,7 @@ public class Users{
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public String UsersAttemptLogin(@FormDataParam("UserId") Integer UserId, @FormDataParam("Password") String Password) throws SQLException {
-       JSONObject response = new JSONObject();
+        JSONObject response = new JSONObject();
         try {
             System.out.println("Invoked Users.UsersAttemptLogin");
             PreparedStatement ps = Main.db.prepareStatement("SELECT Password FROM Users WHERE UserId=? ");

@@ -13,12 +13,10 @@ function attemptLogin(){
             return response.json();
         }else{
             console.log("Success");
-            Cookies.set("UserID", response.UserId)
             if(response.hasOwnProperty("True")||response.hasOwnProperty("true")||response.hasOwnProperty("1")){
                 window.open("UserA.html")
             }else {
-
-                window.open("UserS.html","_self");
+                window.open("UserS.html", "_self");
             }
         }
     })
@@ -204,9 +202,4 @@ function logsUpdate(){
             alert("Log was updated.");
         }
     });
-}
-
-function showUserId(){
-    alert(Cookies.get("UserID"));
-    document.getElementById('userId').innerHTML = `<p>Cookies.get("UserID")</p>`;
 }
