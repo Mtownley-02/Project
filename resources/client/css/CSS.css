@@ -135,3 +135,11 @@ h4{
     width:5px;
     height:auto;
 }
+.LogsTable{
+    min-width: 200px;
+    min-height: 200px;
+    padding: 1px;
+    background-color: #77bf8a;
+    border: 12px;
+    color: black;
+}

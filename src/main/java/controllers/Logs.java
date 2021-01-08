@@ -21,13 +21,13 @@ public class Logs {
     public JSONArray GetTitle() throws SQLException{
         JSONArray response = new JSONArray();
         PreparedStatement UserId=Main.db.prepareStatement("SELECT UserId FROM Users WHERE SessionToken==1");
-
+        ResultSet UserID=UserId.executeQuery();
         PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
         ResultSet LogIdset=LogIncrement.executeQuery();
         int LogId = LogIdset.getInt(1);
         try {
             String row1= new String();
-            ResultSet UserID=UserId.executeQuery();
+           // ResultSet UserID=UserId.executeQuery();
             int id =UserID.getInt(1);
             PreparedStatement Titles =Main.db.prepareStatement("SELECT Title FROM Logs WHERE UserId==?");
             Titles.setInt(1,id);
@@ -43,7 +43,31 @@ public class Logs {
             return response;
         }
     }
-
+    @GET
+    @Path("list")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String LogList() {
+        System.out.println("Invoked Logs.LogList()");
+        JSONArray Log = new JSONArray();
+        try {
+            PreparedStatement ps = Main.db.prepareStatement("SELECT Logs.LogID, Logs.Title, Logs.Text , Logs.UserId FROM Logs");
+            ResultSet results = ps.executeQuery();
+            while (results.next()) {
+                JSONObject row = new JSONObject();
+                row.put("LogId", results.getInt(1));
+                row.put("Title", results.getString(2));
+                row.put("Text",results.getString(3));
+                row.put("UserId",results.getString(4));
+                Log.add(row);
+            }
+            JSONObject response = new JSONObject();
+            response.put("Logs", Log);
+            return response.toString();
+        } catch (Exception exception) {
+            System.out.println("Database error: " + exception.getMessage());
+            return "{\"Error\": \"Unable to list items.  Error code xx.\"}";
+        }
+    }
     @POST
     @Path("create")
     public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") int UserId) throws SQLException {
@@ -66,22 +90,23 @@ public class Logs {
             return response;
         }
     }
-    @POST
-    @Path("view")
-    public JSONArray LogsView(@FormDataParam("LogId") String LogId ){
-        JSONArray response = new JSONArray();
+    @GET
+    @Path("GetText/{LogId}")
+    public String LogsView(@PathParam("LogId") Integer LogId ){
+        JSONObject response = new JSONObject();
+        JSONArray Log = new JSONArray();
         try{
             JSONObject row1= new JSONObject();
-            PreparedStatement ps = Main.db.prepareStatement("SELECT Title,Text FROM Logs WHERE LogId==LogId");
+            PreparedStatement ps = Main.db.prepareStatement("SELECT Text FROM Logs WHERE LogId==?");
+            ps.setInt(1,LogId);
             ResultSet results = ps.executeQuery();
-            row1.put("Title",results.getString(1));
-            row1.put("Text", results.getString( 2));
-            response.add(row1);
-            System.out.println(response.toString());
-            return response;
+            row1.put("Text", results.getString( 1));
+            Log.add(row1);
+            response.put("Logs", Log);
+            return response.toString();
         }catch (Exception exception){
-            response.set(0,"Log error: " + exception.getMessage());
-            return response;
+            response.put("Error","Log error: " + exception.getMessage());
+            return response.toString();
         }
     }
     @DELETE

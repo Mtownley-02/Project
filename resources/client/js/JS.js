@@ -2,7 +2,7 @@ function attemptLogin(){
     debugger;
     console.log("invoked attemptlogin");
     const formData= new FormData(document.getElementById('Login'));
-    let url="/Users/attemptlogin";
+    let url="/Users/attemptlogin/";
     console.log(url);
     fetch(url,{
         method: "POST",
@@ -10,6 +10,7 @@ function attemptLogin(){
     }).then(response =>{
         if(response.hasOwnProperty("error")){
             console.log(JSON.stringify(response));
+            return response.json();
         }else{
             console.log("Success");
             Cookies.set("UserID", response.UserId)
@@ -29,10 +30,9 @@ function goTocreateUser() {
 
 
 function logsCreate() {
-    debugger;
     console.log("invoked logsCreate");
     const formData = new FormData(document.getElementById('LogCreate'));
-    let url = "/Logs/create";
+    let url = "/Logs/create/";
     fetch(url, {
         method: "POST",
         body: formData,
@@ -47,9 +47,8 @@ function logsCreate() {
     });
 }
 
-function logsDelete() {
+function logsDelete(LogId) {
     console.log("invoked logsDelete");
-    const LogId= document.getElementById("filler").value;
     const url="/Logs/delete/";
     fetch(url + LogId,{
         method: "DELETE",
@@ -59,109 +58,108 @@ function logsDelete() {
         if (response.hasOwnProperty("Error")) {
             alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
         } else {
-            alert(JSON.stringify(response) +"Log was removed from database.");
+            alert("Log was removed from database.");
         }
     });
 }
 
-function adminDelete() {
-    debugger;
+function adminDelete(UserID) {
     console.log("invoked adminDelete");
-    const formData= new FormData(document.getElementById('AdminDelete'));
-    let url="/Admins/delete";
-
+    let url="/Admins/delete/";
     fetch(url + UserID, {                // UserID as a path parameter
         method: "DELETE",
     }).then(response => {
-        return response.json();                         //return response to JSON
+        return response;                         //return response to JSON
     }).then(response => {                                   //something here
         if (response.hasOwnProperty("Error")) {         //checks if response from server has an "Error"
             alert(JSON.stringify(response));            // if it does, convert JSON object to string and alert
         } else {
-            alert(JSON.stringify(response), "has been deleted");
+            alert(JSON.stringify(response)+ "has been deleted");
         }
     });
 }
 
-
-function adminViewUsers() {
-    debugger;
-    console.log("invoked adminViewUsers");
-    const url="/Admins/view/";
+function adminViewUsers(){
+    console.log("Invoked listUsers() ");
+    let url = "/Admins/list/";
     fetch(url, {
-        method: "GET",
+        method: 'GET',
     }).then(response => {
-        return response.json();                 //return response as JSON
+        return response.json();                 //now return that promise to JSON
     }).then(response => {
-        if (response.hasOwnProperty("Error")) { //checks if response from the web server has an "Error"
-            alert(JSON.stringify(response));    // if it does, convert JSON object to string and alert (pop up window)
+        if (response.hasOwnProperty("Error")) {
+            alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
         } else {
-            formatUsersList(response);          //this function will create an HTML table of the data (as per previous lesson)
+            let UsersTable = `<div>`;
+            UsersTable += `<table><th>UserId</th><th>Password</th><th>Admin</th><th>SessionToken</th>`;
+            console.log(response);
+            for(let r of response.Users){
+                UsersTable += `<tr class="User_${r.UserId}">`
+                    + `<td>${r.UserId}</td>`
+                    + `<td>${r.Password}</td>`
+                    + `<td>${r.Admin}</td>`
+                    + `<td>${r.SessionToken}</td>`
+                    + `<td><button onclick="adminDelete(${r.UserId})" class="button">Delete User</button></td>`
+                    + `</tr>`;
+            }
+            UsersTable += `</div>`;
+            document.getElementById('Users').innerHTML = UsersTable;
         }
     });
 }
 
-function formatUsersList(Array){
-    debugger;
-    let r = new Array(), j = -1;
-    for (let key=0, size=Array.length; key<size; key++){
-        r[++j] ='<tr><td>';
-        r[++j] = Array[key][0];
-        r[++j] = '</td><td class="row1">';
-        r[++j] = Array[key][1];
-        r[++j] = '</td><td class="row2">';
-        r[++j] = Array[key][2];
-        r[++j] = '</td></tr>';
-    }
-    $('#UsersTable')[0].innerHTML = r.join('');
-}
 
+function adminViewLogs(){
+    console.log("Invoked listLogs() ");
+    let url = "/Logs/list/";
+    fetch(url, {
+        method: 'GET',
+    }).then(response => {
+        return response.json();                 //now return that promise to JSON
+    }).then(response => {
+        if (response.hasOwnProperty("Error")) {
+            alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
+        } else {
+            let LogsTable = `<div>`;
+            LogsTable += `<table><th>LogID</th><th>Title</th><th>Text</th><th>UserId</th>`;
+            console.log(response);
+            for(let r of response.Logs){
+                LogsTable += `<tr class="Log_${r.LogId}">`
+
+                    + `<td>${r.LogId}</td>`
+                    + `<td>${r.Title}</td>`
+                    + `<td>${r.Text}</td>`
+                    + `<td>${r.UserId}</td>`
+                    + `<td><button onclick="logsDelete(${r.LogId})" class="button">Delete Log</button></td>`
+                    + `</tr>`;
+            }
+            LogsTable += `</div>`;
+            document.getElementById('Logs').innerHTML = LogsTable;
+        }
+    });
+}
 function goToLogsList() {
     window.open("LogList.html");
 }
 
-function adminViewLogs() {
-    debugger;
-    console.log("invoked adminViewLogs");
-    const url="/Admins/viewLog/";
-    fetch(url, {
-        method: "GET",
-    }).then(response => {
-        return response.json();                 //return response as JSON
-    }).then(response => {
-        if (response.hasOwnProperty("Error")) { //checks if response from the web server has an "Error"
-            alert(JSON.stringify(response));    // if it does, convert JSON object to string and alert (pop up window)
-        } else {
-            formatLogsList(response);          //this function will create an HTML table of the data (as per previous lesson)
-        }
-    });
-}
-
-function formatLogsList(Array){
-    debugger;
-    let dataHTML = "";
-    for (let item of Array) {
-        dataHTML += "<tr><td>" + item.LogId + "<td><td>" + item.Title + "<td><td>" + item.Text + "<tr><td>";
-    }
-    document.getElementById("LogsTable").innerHTML = dataHTML;
-}
 
 function GetLogs() {
     debugger;
     console.log("invoked GetLogs");
-    const formData= new FormData(document.getElementById('getLog'));
-    let url="/Logs/view";
-    fetch(url,{
-        method: "POST",
-        body: formData,
+    const LogId= new FormData(document.getElementById('getLog'));
+    let url="/Logs/GetText/";
+    fetch(url + LogId,{
+        method: "GET",
     }).then(response=>{
-        LogUpdate.append(response[0],response[1]);
-        return document.getElementById('LogUpdate').value = response;
+        let LogUpdate;
+        LogUpdate=response.toString();
+        document.getElementById('TextBox').innerText = LogUpdate;
     }).then(response => {
         if (response.hasOwnProperty("Error")) {
             alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
         } else {
             alert("Log was fetched.");
+
         }
     });
 }
@@ -172,7 +170,7 @@ function goToLogsView() {
 function createUser(){
     debugger;
     const formData= new FormData(document.getElementById("CreateU"));
-    let url="/Users/create";
+    let url="/Users/create/";
         fetch(url, {
             method: "POST",
             body: formData,
@@ -182,7 +180,7 @@ function createUser(){
             if (response.hasOwnProperty("Error")) {
                 alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
             } else {
-                alert("User created");
+                alert("User created, UserID:"+response.toString());
             }
         })
 }
@@ -192,7 +190,7 @@ function logsUpdate(){
     console.log("invoked logsUpdate");
     const LogId=new FormData(document.getElementById('getLog'));
     const formData=new FormData(document.getElementById('LogUpdate'));
-    let url="/Logs/update";
+    let url="/Logs/update/";
     fetch(url, {
         method: "POST",
         body: LogId,formData
