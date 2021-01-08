@@ -1,5 +1,4 @@
 function attemptLogin(){
-    debugger;
     console.log("invoked attemptlogin");
     const formData= new FormData(document.getElementById('Login'));
     let url="/Users/attemptlogin/";
@@ -150,7 +149,7 @@ function GetLogs() {
         method: "GET",
     }).then(response=>{
         let LogUpdate;
-        LogUpdate=response.toString();
+        LogUpdate=response.json();
         document.getElementById('TextBox').innerText = LogUpdate;
     }).then(response => {
         if (response.hasOwnProperty("Error")) {
@@ -194,7 +193,7 @@ function logsUpdate(){
         body: LogId,formData
     }).then(response=>{
 
-        return response;
+        return response.json();
     } ).then(response => {
         if (response.hasOwnProperty("Error")) {
             alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
