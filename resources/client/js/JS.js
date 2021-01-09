@@ -141,7 +141,6 @@ function goToLogsList() {
 
 
 function GetLogs() {
-    debugger;
     console.log("invoked GetLogs");
     const LogId= document.getElementById("getLog").value;
     console.log(LogId);
@@ -167,7 +166,6 @@ function goToLogsView() {
     window.open("LogEdit.html");
 }
 function createUser(){
-    debugger;
     const formData= new FormData(document.getElementById("CreateU"));
     let url="/Users/create/";
         fetch(url, {
@@ -185,7 +183,6 @@ function createUser(){
 }
 
 function logsUpdate(){
-    debugger;
     console.log("invoked logsUpdate");
     const formData=new FormData(document.getElementById('LogUpdate'));
     let url="/Logs/update/";
