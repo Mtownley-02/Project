@@ -187,14 +187,12 @@ function createUser(){
 function logsUpdate(){
     debugger;
     console.log("invoked logsUpdate");
-    const LogId= document.getElementById("getLog").value;
     const formData=new FormData(document.getElementById('LogUpdate'));
     let url="/Logs/update/";
     fetch(url, {
         method: "POST",
-        body: LogId,formData
+        body: formData
     }).then(response=>{
-
         return response.json();
     } ).then(response => {
         if (response.hasOwnProperty("Error")) {
