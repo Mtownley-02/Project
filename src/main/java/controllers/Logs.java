@@ -93,7 +93,7 @@ public class Logs {
     @GET
     @Path("GetText/{LogId}")
     public String LogsView(@PathParam("LogId") Integer LogId ){
-        JSONObject response = new JSONObject();
+        String[] response = new String[66];
         JSONArray Log = new JSONArray();
         try{
             JSONObject row1= new JSONObject();
@@ -101,12 +101,14 @@ public class Logs {
             ps.setInt(1,LogId);
             ResultSet results = ps.executeQuery();
             row1.put("Text", results.getString( 1));
-            Log.add(row1);
-            response.put("Logs", Log);
-            return response.toString();
+            System.out.println(row1);
+            Log.add(results.getString( 1));
+            System.out.println(Log.toString());
+            return Log.toString();
         }catch (Exception exception){
-            response.put("Error","Log error: " + exception.getMessage());
-            return response.toString();
+            System.out.println(exception.getMessage());
+            return ("Error Log error: " + exception.getMessage());
+
         }
     }
     @DELETE
@@ -126,9 +128,12 @@ public class Logs {
     }
     @POST
     @Path("update")
-    public String LogsUpdate(@FormDataParam("LogId") String Logid,@FormDataParam("Title") String title,@FormDataParam("Text") String text)throws SQLException{
+    public String LogsUpdate(@FormDataParam("LogId") String Logid,@FormDataParam("Text") String text)throws SQLException{
         try {
-            PreparedStatement ps = Main.db.prepareStatement("UPDATE Logs SET LogId=Logid,Text=text,Title=title WHERE LogId==Logid");
+            PreparedStatement ps = Main.db.prepareStatement("UPDATE Logs SET Text=? WHERE LogId==?");
+            ps.setString(1,text);
+
+            ps.setInt(2, Integer.parseInt(Logid));
             ps.executeUpdate();
             return ("Success");
         } catch (Exception exception){

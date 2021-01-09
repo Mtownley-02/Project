@@ -143,20 +143,22 @@ function goToLogsList() {
 function GetLogs() {
     debugger;
     console.log("invoked GetLogs");
-    const LogId= new FormData(document.getElementById('getLog'));
+    const LogId= document.getElementById("getLog").value;
+    console.log(LogId);
     let url="/Logs/GetText/";
     fetch(url + LogId,{
         method: "GET",
     }).then(response=>{
-        let LogUpdate;
-        LogUpdate=response.json();
-        document.getElementById('TextBox').innerText = LogUpdate;
+        return response.json();
     }).then(response => {
         if (response.hasOwnProperty("Error")) {
             alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
         } else {
+            let LogUpdate;
+            LogUpdate=response;
+            console.log(LogUpdate);
+            document.getElementById('TextBox').innerText = LogUpdate;
             alert("Log was fetched.");
-
         }
     });
 }
@@ -185,7 +187,7 @@ function createUser(){
 function logsUpdate(){
     debugger;
     console.log("invoked logsUpdate");
-    const LogId=new FormData(document.getElementById('getLog'));
+    const LogId= document.getElementById("getLog").value;
     const formData=new FormData(document.getElementById('LogUpdate'));
     let url="/Logs/update/";
     fetch(url, {
