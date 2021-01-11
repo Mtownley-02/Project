@@ -1,4 +1,5 @@
 function attemptLogin(){
+    debugger;
     console.log("invoked attemptlogin");
     const formData= new FormData(document.getElementById('Login'));
     let url="/Users/attemptlogin/";
@@ -9,13 +10,18 @@ function attemptLogin(){
     }).then(response =>{
         if(response.hasOwnProperty("error")){
             console.log(JSON.stringify(response));
+
             return response.json();
         }else{
+            debugger;
+            let AdmincheckJson=response.json();
+            let Admincheck=AdmincheckJson.toString();
             console.log("Success");
-            if(response.hasOwnProperty("True")||response.hasOwnProperty("true")||response.hasOwnProperty("1")){
+            console.log(Admincheck);
+            if(Admincheck.hasOwnProperty("True")||Admincheck.hasOwnProperty("true")||Admincheck.hasOwnProperty("1")){
                 window.open("UserA.html")
             }else {
-                window.open("UserS.html", "_self");
+              //  window.open("UserS.html", "_self");
             }
         }
     })
@@ -164,6 +170,9 @@ function GetLogs() {
 
 function goToLogsView() {
     window.open("LogEdit.html");
+}
+function goToLogsViewAdmin() {
+    window.open("LogEditAdmin.html");
 }
 function createUser(){
     const formData= new FormData(document.getElementById("CreateU"));
