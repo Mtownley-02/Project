@@ -1,5 +1,4 @@
 function attemptLogin(){
-    debugger;
     console.log("invoked attemptlogin");
     const formData= new FormData(document.getElementById('Login'));
     let url="/Users/attemptlogin/";
@@ -13,7 +12,6 @@ function attemptLogin(){
 
             return response.json();
         }else{
-            debugger;
             let AdmincheckJson=response.json();
             let Admincheck=AdmincheckJson.toString();
             console.log("Success");
@@ -21,7 +19,7 @@ function attemptLogin(){
             if(Admincheck.hasOwnProperty("True")||Admincheck.hasOwnProperty("true")||Admincheck.hasOwnProperty("1")){
                 window.open("UserA.html")
             }else {
-              //  window.open("UserS.html", "_self");
+               window.open("UserS.html");
             }
         }
     })
