@@ -71,7 +71,7 @@ public class Logs {
     @POST
     @Path("create")
     public String LogsCreate(@FormDataParam("Title") String Title,@FormDataParam("Text") String Text,@FormDataParam("UserId") int UserId) throws SQLException {
-        String response;
+        int response;
         PreparedStatement LogIncrement= Main.db.prepareStatement("SELECT MAX(LogId) FROM Logs");
         ResultSet LogIdset=LogIncrement.executeQuery();
         int LogId = LogIdset.getInt(1);
@@ -82,12 +82,14 @@ public class Logs {
             ps.setString(3,Text);
             ps.setInt(4,UserId);
             ps.executeUpdate();
-            response=("Success");
-            return response;
+            response=(LogId+1);
+            System.out.println("success "+response);
+            return Integer.toString(response);
         }catch (Exception exception){
+            String responseerror;
             System.out.println("Log error: " + exception.getMessage());
-            response="{\"Error\": \"Unable to save log.\"}";
-            return response;
+            responseerror="{\"Error\": \"Unable to save log.\"}";
+            return responseerror;
         }
     }
     @GET

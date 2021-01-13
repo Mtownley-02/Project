@@ -40,12 +40,12 @@ function logsCreate() {
         method: "POST",
         body: formData,
     }).then(response => {
-        return response;
+        return response.json();
     }).then(response => {
         if (response.hasOwnProperty("Error") ||(response.hasOwnProperty("error"))) {
             alert(JSON.stringify(response));        // if it does, convert JSON object to string and alert
         } else {
-            alert("Log was added to database.");
+            alert("Log created, LogID:"+response.toString());
         }
     });
 }
