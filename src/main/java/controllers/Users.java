@@ -115,9 +115,13 @@ public class Users{
                     admin.setInt(1, UserId);
                     ResultSet results = admin.executeQuery();
                     cookieUpdate.executeUpdate();
-                   String AdData=results.getString(1);
-                   System.out.println(AdData);
-                    return AdData;
+                    String AdData = results.getString(1);
+                    System.out.println(AdData);
+                    if (AdData == "true" || AdData == "True" || AdData == "1") {
+                        return "true";
+                    }else{
+                        return null;
+                    }
                 }else {
                     return "{\"Error\": \"Database error: Incorrect Password/Id\"}";
                     //System.out.println("Database error: Incorrect Password/Id");
