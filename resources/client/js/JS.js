@@ -8,17 +8,17 @@ function attemptLogin(){
         method: "POST",
         body: formData,
     }).then(response =>{
-        return response;
+        return response.json();
     }).then(response =>{
         if(response.hasOwnProperty("error")){
             console.log(JSON.stringify(response));
 
             return response;
         }else{
-            let Admincheck=response;
+            let Admincheck=response.toString();
             console.log("Success");
             console.log(Admincheck);
-            if(Admincheck.hasOwnProperty("true")){
+            if(Admincheck=="true"){
                 window.open("UserA.html")
             }else{
                window.open("UserS.html");

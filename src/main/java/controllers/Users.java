@@ -117,10 +117,10 @@ public class Users{
                     cookieUpdate.executeUpdate();
                     String AdData = results.getString(1);
                     System.out.println(AdData);
-                    if (AdData == "true" || AdData == "True" || AdData == "1") {
+                    if (AdData.equals("true") || AdData.equals("True") || AdData.equals("1")) {
                         return "true";
                     }else{
-                        return null;
+                        return "false";
                     }
                 }else {
                     return "{\"Error\": \"Database error: Incorrect Password/Id\"}";
