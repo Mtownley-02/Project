@@ -10,7 +10,7 @@ function attemptLogin(){
     }).then(response =>{
         return response.json();
     }).then(response =>{
-        if(response.hasOwnProperty("error")){
+        if(response.hasOwnProperty("Error")){
             console.log(JSON.stringify(response));
 
             return response;
